@@ -1,8 +1,5 @@
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -13,24 +10,16 @@ import javax.swing.JTextField;
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.border.TitledBorder;
-import javax.swing.UIManager;
-import java.awt.Color;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 
 @SuppressWarnings("serial")
 public class EstruturaAgenda extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
+	private JTextField txtHora;
+	private JTextField txtNome;
+	private JTextField txtTel;
+	private JTextField txtServico;
 	private JTable table;
 
 	/**
@@ -74,25 +63,25 @@ public class EstruturaAgenda extends JDialog {
 		lblServio.setBounds(290, 105, 46, 14);
 		getContentPane().add(lblServio);
 		
-		textField = new JTextField();
-		textField.setBounds(85, 62, 179, 20);
-		getContentPane().add(textField);
-		textField.setColumns(10);
+		txtHora = new JTextField();
+		txtHora.setBounds(85, 62, 179, 20);
+		getContentPane().add(txtHora);
+		txtHora.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(346, 62, 179, 20);
-		getContentPane().add(textField_1);
+		txtNome = new JTextField();
+		txtNome.setColumns(10);
+		txtNome.setBounds(346, 62, 179, 20);
+		getContentPane().add(txtNome);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(85, 102, 179, 20);
-		getContentPane().add(textField_2);
+		txtTel = new JTextField();
+		txtTel.setColumns(10);
+		txtTel.setBounds(85, 102, 179, 20);
+		getContentPane().add(txtTel);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(346, 102, 179, 20);
-		getContentPane().add(textField_3);
-		textField_3.setColumns(10);
+		txtServico = new JTextField();
+		txtServico.setBounds(346, 102, 179, 20);
+		getContentPane().add(txtServico);
+		txtServico.setColumns(10);
 		
 		JLabel lblHorario = new JLabel("Horario");
 		lblHorario.setBounds(22, 65, 53, 14);
@@ -113,20 +102,30 @@ public class EstruturaAgenda extends JDialog {
 			cancelButton.setActionCommand("Cancel");
 		}
 		
+		
+		JButton button = new JButton("");
+		button.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/delete.png")));
+		button.setActionCommand("OK");
+		button.setBounds(474, 335, 51, 41);
+		getContentPane().add(button);
+		
+		JButton btnAlterar = new JButton("");
+		btnAlterar.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/relogio.png")));
+		btnAlterar.setActionCommand("OK");
+		btnAlterar.setBounds(418, 335, 46, 41);
+		getContentPane().add(btnAlterar);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(83, 130, 442, 196);
+		getContentPane().add(scrollPane);
+		
 		JPanel panel = new JPanel();
-		panel.setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
-		panel.setBounds(106, 130, 397, 197);
-		getContentPane().add(panel);
-		panel.setLayout(null);
+		scrollPane.setViewportView(panel);
 		
 		table = new JTable();
-		table.setBackground(Color.ORANGE);
-		table.setBorder(UIManager.getBorder("FormattedTextField.border"));
-		table.setBounds(10, 11, 376, 173);
-		panel.add(table);
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
-				{"Horario", "Cliente", "Telefone", "Servi\u00E7o", "Valor"},
+				{"Hor\u00E1rio", "Cliente", "Telefone", "Servi\u00E7o", "Valor"},
 				{"9:00", null, null, null, null},
 				{"9:30", null, null, null, null},
 				{"10:00", null, null, null, null},
@@ -150,25 +149,10 @@ public class EstruturaAgenda extends JDialog {
 				{"19:00", null, null, null, null},
 			},
 			new String[] {
-				"Horario", "Cliente", "Telefone", "Servi\u00E7o", "Valor"
+				"Horario", "Cliente", "Telefone", "Servico", "Valor"
 			}
 		));
-		table.getColumnModel().getColumn(0).setPreferredWidth(38);
-		table.getColumnModel().getColumn(4).setPreferredWidth(45);
-		
-		JScrollBar scrollBar = new JScrollBar();
-		scrollBar.setBounds(499, 133, 17, 188);
-		getContentPane().add(scrollBar);
-		JButton button = new JButton("");
-		button.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/delete.png")));
-		button.setActionCommand("OK");
-		button.setBounds(474, 335, 51, 41);
-		getContentPane().add(button);
-		
-		JButton btnAlterar = new JButton("");
-		btnAlterar.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/relogio.png")));
-		btnAlterar.setActionCommand("OK");
-		btnAlterar.setBounds(418, 335, 46, 41);
-		getContentPane().add(btnAlterar);
+		table.getColumnModel().getColumn(0).setPreferredWidth(46);
+		panel.add(table);
 	}
 }
