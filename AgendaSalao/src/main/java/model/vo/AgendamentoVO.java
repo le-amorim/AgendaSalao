@@ -1,20 +1,23 @@
 package model.vo;
 
-public class ClienteVO {
+public class AgendamentoVO {
 private String nome;
 private String hora;
 private String servico;
 private String telefone;
+private Double Valor;
 
-public ClienteVO(String nome, String hora, String servico, String telefone) {
+
+public AgendamentoVO(String nome, String hora, String servico, String telefone, Double valor) {
 	super();
 	this.nome = nome;
 	this.hora = hora;
 	this.servico = servico;
 	this.telefone = telefone;
+	Valor = valor;
 }
 
-public ClienteVO() {
+public AgendamentoVO() {
 	super();
 	// TODO Auto-generated constructor stub
 }
@@ -49,6 +52,14 @@ public String getTelefone() {
 
 public void setTelefone(String telefone) {
 	this.telefone = telefone;
+}
+
+public Double getValor() {
+	return Valor;
+}
+
+public void setValor(Double valor) {
+	Valor = valor;
 }
 
 

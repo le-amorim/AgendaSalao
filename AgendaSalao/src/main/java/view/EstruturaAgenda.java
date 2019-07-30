@@ -23,6 +23,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+@SuppressWarnings("serial")
 public class EstruturaAgenda extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
@@ -158,7 +159,6 @@ public class EstruturaAgenda extends JDialog {
 		JScrollBar scrollBar = new JScrollBar();
 		scrollBar.setBounds(499, 133, 17, 188);
 		getContentPane().add(scrollBar);
-		
 		JButton button = new JButton("");
 		button.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/delete.png")));
 		button.setActionCommand("OK");
