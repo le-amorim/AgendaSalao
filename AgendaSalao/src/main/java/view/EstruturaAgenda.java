@@ -19,6 +19,9 @@ import javax.swing.JSeparator;
 import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
 import java.awt.Color;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 public class EstruturaAgenda extends JDialog {
 
@@ -111,46 +114,61 @@ public class EstruturaAgenda extends JDialog {
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
-		panel.setBounds(30, 130, 594, 200);
+		panel.setBounds(106, 130, 397, 197);
 		getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		table = new JTable();
+		table.setBackground(Color.ORANGE);
 		table.setBorder(UIManager.getBorder("FormattedTextField.border"));
-		table.setBounds(6, 16, 578, 173);
+		table.setBounds(10, 11, 376, 173);
 		panel.add(table);
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
-				{"Horario", "Cliente", "Telefone", "Servi\u00E7o"},
-				{"9:00", null, null, null},
-				{"9:30", null, null, null},
-				{"10:00", null, null, null},
-				{"10:30", null, null, null},
-				{"11:00", null, null, null},
-				{"11:30", null, null, null},
-				{"12:00", null, null, null},
-				{"12:30", null, null, null},
-				{"13:00", null, null, null},
-				{"13:30", null, null, null},
-				{"14:00", null, null, null},
-				{"14:30", null, null, null},
-				{"15:00", null, null, null},
-				{"15:30", null, null, null},
-				{"16:00", null, null, null},
-				{"16:30", null, null, null},
-				{"17:00", null, null, null},
-				{"17:30", null, null, null},
-				{"18:00", null, null, null},
-				{"18:30", null, null, null},
-				{"19:00", null, null, null},
+				{"Horario", "Cliente", "Telefone", "Servi\u00E7o", "Valor"},
+				{"9:00", null, null, null, null},
+				{"9:30", null, null, null, null},
+				{"10:00", null, null, null, null},
+				{"10:30", null, null, null, null},
+				{"11:00", null, null, null, null},
+				{"11:30", null, null, null, null},
+				{"12:00", null, null, null, null},
+				{"12:30", null, null, null, null},
+				{"13:00", null, null, null, null},
+				{"13:30", null, null, null, null},
+				{"14:00", null, null, null, null},
+				{"14:30", null, null, null, null},
+				{"15:00", null, null, null, null},
+				{"15:30", null, null, null, null},
+				{"16:00", null, null, null, null},
+				{"16:30", null, null, null, null},
+				{"17:00", null, null, null, null},
+				{"17:30", null, null, null, null},
+				{"18:00", null, null, null, null},
+				{"18:30", null, null, null, null},
+				{"19:00", null, null, null, null},
 			},
 			new String[] {
-				"Horario", "Cliente", "Telefone", "Servi\u00E7o"
+				"Horario", "Cliente", "Telefone", "Servi\u00E7o", "Valor"
 			}
 		));
+		table.getColumnModel().getColumn(0).setPreferredWidth(38);
+		table.getColumnModel().getColumn(4).setPreferredWidth(45);
 		
 		JScrollBar scrollBar = new JScrollBar();
-		scrollBar.setBounds(622, 146, 17, 172);
+		scrollBar.setBounds(499, 133, 17, 188);
 		getContentPane().add(scrollBar);
+		
+		JButton button = new JButton("");
+		button.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/delete.png")));
+		button.setActionCommand("OK");
+		button.setBounds(474, 335, 51, 41);
+		getContentPane().add(button);
+		
+		JButton btnAlterar = new JButton("");
+		btnAlterar.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/relogio.png")));
+		btnAlterar.setActionCommand("OK");
+		btnAlterar.setBounds(418, 335, 46, 41);
+		getContentPane().add(btnAlterar);
 	}
 }

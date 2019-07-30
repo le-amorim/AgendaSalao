@@ -20,6 +20,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.DefaultComboBoxModel;
 
+@SuppressWarnings("serial")
 public class FrmPrimeiraTela extends JFrame {
 
 	private JPanel contentPane;
@@ -45,7 +46,28 @@ public class FrmPrimeiraTela extends JFrame {
 	 */
 	public FrmPrimeiraTela() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 665, 410);
+		setBounds(100, 100, 676, 430);
+		
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
+		JMenu mnNewMenu = new JMenu("");
+		mnNewMenu.setIcon(new ImageIcon(FrmPrimeiraTela.class.getResource("/icones/settings.png")));
+		menuBar.add(mnNewMenu);
+		
+		JMenuItem mntmCaixa = new JMenuItem("Caixa Salão");
+		mntmCaixa.setIcon(new ImageIcon(FrmPrimeiraTela.class.getResource("/icones/carteira.png")));
+		mntmCaixa.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			Vendas venda = new Vendas();
+			venda.setVisible(true);
+				
+			}
+		});
+		mnNewMenu.add(mntmCaixa);
+		
+		JMenuItem mntmCaixaProdutos = new JMenuItem("Caixa Produtos");
+		mnNewMenu.add(mntmCaixaProdutos);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -407,7 +429,7 @@ public class FrmPrimeiraTela extends JFrame {
 		button_30.setBounds(576, 316, 63, 44);
 		contentPane.add(button_30);
 		
-		JLabel lblMesAtual = new JLabel("Mes Atual");
+		JLabel lblMesAtual = new JLabel("Setembro");
 		lblMesAtual.setBounds(481, 331, 63, 14);
 		contentPane.add(lblMesAtual);
 	}
