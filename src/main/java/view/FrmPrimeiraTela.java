@@ -43,7 +43,7 @@ public class FrmPrimeiraTela extends JFrame {
 	 */
 	public FrmPrimeiraTela() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 676, 430);
+		setBounds(100, 100, 680, 448);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -184,7 +184,7 @@ public class FrmPrimeiraTela extends JFrame {
 				
 			}
 		});
-		comboBox.setBounds(10, 71, 158, 20);
+		comboBox.setBounds(10, 71, 168, 20);
 		contentPane.add(comboBox);
 		
 		JLabel lblProfissional = new JLabel("Profissional");
