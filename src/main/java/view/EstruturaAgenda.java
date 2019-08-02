@@ -191,8 +191,9 @@ public class EstruturaAgenda extends JDialog {
 		getContentPane().add(txtValor);
 		txtValor.setColumns(10);
 		
-		JLabel lblValor = new JLabel("Orçamento");
-		lblValor.setBounds(459, 65, 70, 14);
+		JLabel lblValor = new JLabel("");
+		lblValor.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/money.png")));
+		lblValor.setBounds(460, 48, 53, 42);
 		getContentPane().add(lblValor);
 	}
 }
