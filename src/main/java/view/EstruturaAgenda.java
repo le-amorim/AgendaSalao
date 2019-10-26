@@ -47,7 +47,7 @@ public class EstruturaAgenda extends JDialog {
 	private Profissional profissionalSelecionado;
 	private Cliente clienteSelecionado;
 	private JLabel lblNomeProfissional;
-	private JComboBox <Cliente> cbClientes;
+	private JComboBox<Cliente> cbClientes;
 	private ArrayList<Cliente> clientes;
 
 	/**
@@ -71,16 +71,16 @@ public class EstruturaAgenda extends JDialog {
 		DatePickerSettings dateSettings = new DatePickerSettings();
 		dateSettings.setAllowKeyboardEditing(false);
 
-		final DateTimePicker dataTeste = new DateTimePicker(dateSettings, null);
-		dataTeste.setBounds(95, 60, 300, 30);
-		getContentPane().add(dataTeste);
+		final DateTimePicker dataComHora = new DateTimePicker(dateSettings, null);
+		dataComHora.setBounds(95, 60, 300, 30);
+		getContentPane().add(dataComHora);
 
 		JButton btnPegarData = new JButton("Criar data");
 		btnPegarData.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// Atributos próprios do componente datePicker (date e time)
-				LocalDate dataSelecionada = dataTeste.getDatePicker().getDate();
-				LocalTime horaSelecionada = dataTeste.getTimePicker().getTime();
+				LocalDate dataSelecionada = dataComHora.getDatePicker().getDate();
+				LocalTime horaSelecionada = dataComHora.getTimePicker().getTime();
 				LocalDateTime dataComHora = LocalDateTime.of(dataSelecionada, horaSelecionada);
 
 				JOptionPane.showMessageDialog(null, "Data selecionada: " + dataSelecionada.toString());
@@ -114,7 +114,7 @@ public class EstruturaAgenda extends JDialog {
 		getContentPane().add(lblServico);
 
 		txtServico = new JTextField();
-		txtServico.setBounds(96, 135, 206, 29);
+		txtServico.setBounds(96, 135, 204, 29);
 		getContentPane().add(txtServico);
 		txtServico.setColumns(10);
 
@@ -123,53 +123,57 @@ public class EstruturaAgenda extends JDialog {
 		lblHorario.setBounds(15, 66, 70, 14);
 		getContentPane().add(lblHorario);
 		{
-			JButton okButton = new JButton("");
-			okButton.addActionListener(new ActionListener() {
+			JButton btnSalvar = new JButton("");
+			btnSalvar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					ControladoraAgendamento controladora = new ControladoraAgendamento();
 					String servicoDigitado = txtServico.getText();
 					String valorDigitado = txtValor.getText();
-					
-					LocalDate dataSelecionada = dataTeste.getDatePicker().getDate();
-					LocalTime horaSelecionada = dataTeste.getTimePicker().getTime();
+					LocalDate dataSelecionada = dataComHora.getDatePicker().getDate();
+					LocalTime horaSelecionada = dataComHora.getTimePicker().getTime();
 					Profissional profissionalSelecionado = getProfissionalSelecionado();
 					Cliente clienteSelecionado = getClienteSelecionado();
 					LocalDateTime dataComHoraSelecionado = LocalDateTime.of(dataSelecionada, horaSelecionada);
 					String mensagem = "";
 					mensagem += ControladoraAgendamento.validar(servicoDigitado, valorDigitado,
 							profissionalSelecionado);
+					
 					if (mensagem.isEmpty()) {
-						 Agendamento agendamento = new Agendamento(clienteSelecionado,profissionalSelecionado,
-						 servicoDigitado,
-						 valorDigitado, dataComHoraSelecionado);
-
+						Agendamento agendamento = new Agendamento(clienteSelecionado, profissionalSelecionado,
+								servicoDigitado, valorDigitado, dataComHoraSelecionado);
+					agendamento = controladora.salvar(agendamento);
+					} else {
+						JOptionPane.showMessageDialog(null, mensagem);
 					}
 				}
 			});
-			okButton.setBounds(603, 377, 46, 41);
-			getContentPane().add(okButton);
-			okButton.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/Save.png")));
-			okButton.setActionCommand("OK");
-			getRootPane().setDefaultButton(okButton);
+			btnSalvar.setBounds(603, 377, 46, 41);
+			getContentPane().add(btnSalvar);
+			btnSalvar.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/Save.png")));
+			btnSalvar.setActionCommand("OK");
+			getRootPane().setDefaultButton(btnSalvar);
 		}
 		{
-			JButton cancelButton = new JButton("");
-			cancelButton.addActionListener(new ActionListener() {
+			JButton btnLimpar = new JButton("");
+			btnLimpar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					txtServico.setText("");
 					txtValor.setText("");
+					cbClientes.setSelectedIndex(-1);
+
 				}
 			});
-			cancelButton.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/limpar.png")));
-			cancelButton.setBounds(479, 377, 53, 41);
-			getContentPane().add(cancelButton);
-			cancelButton.setActionCommand("Cancel");
+			btnLimpar.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/limpar.png")));
+			btnLimpar.setBounds(479, 377, 53, 41);
+			getContentPane().add(btnLimpar);
+			btnLimpar.setActionCommand("Cancel");
 		}
 
-		JButton button = new JButton("");
-		button.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/delete.png")));
-		button.setActionCommand("Delete");
-		button.setBounds(542, 377, 51, 41);
-		getContentPane().add(button);
+		JButton btnCancelar = new JButton("");
+		btnCancelar.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/delete.png")));
+		btnCancelar.setActionCommand("Delete");
+		btnCancelar.setBounds(542, 377, 51, 41);
+		getContentPane().add(btnCancelar);
 
 		JButton btnAlterar = new JButton("");
 		btnAlterar.addActionListener(new ActionListener() {
@@ -216,20 +220,20 @@ public class EstruturaAgenda extends JDialog {
 		panel.add(table);
 
 		txtValor = new JTextField();
-		txtValor.setBounds(346, 130, 43, 30);
+		txtValor.setBounds(346, 135, 43, 29);
 		getContentPane().add(txtValor);
 		txtValor.setColumns(10);
 
 		JLabel lblValor = new JLabel("");
 		lblValor.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/money.png")));
-		lblValor.setBounds(343, 92, 53, 35);
+		lblValor.setBounds(343, 92, 46, 35);
 		getContentPane().add(lblValor);
 
 		lblNomeProfissional = new JLabel("");
 		lblNomeProfissional.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 20));
 		lblNomeProfissional.setBounds(400, 12, 173, 22);
 		getContentPane().add(lblNomeProfissional);
-	
+
 		consultarClientes();
 		cbClientes = new JComboBox(clientes.toArray());
 		cbClientes.setSelectedIndex(-1);
@@ -238,15 +242,26 @@ public class EstruturaAgenda extends JDialog {
 
 			}
 		});
-		cbClientes.setBounds(95, 98, 207, 30);
+		cbClientes.setBounds(95, 98, 204, 30);
 		getContentPane().add(cbClientes);
+
+		JButton btnAddCliente = new JButton("");
+		btnAddCliente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaCadastroCliente2 tela = new TelaCadastroCliente2();
+				tela.setVisible(true);
+
+			}
+		});
+		btnAddCliente.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/plus.png")));
+		btnAddCliente.setBounds(5, 104, 24, 23);
+		getContentPane().add(btnAddCliente);
 	}
 
 	public Profissional getProfissionalSelecionado() {
 		return profissionalSelecionado;
 	}
 
-	
 	public void setProfissionalSelecionado(Profissional profissionalSelecionado) {
 		this.lblNomeProfissional.setText(profissionalSelecionado.getNome());
 		this.profissionalSelecionado = profissionalSelecionado;
@@ -261,7 +276,6 @@ public class EstruturaAgenda extends JDialog {
 		return clienteSelecionado;
 	}
 
-	
 	public void setClienteSelecionado(Cliente clienteSelecionado) {
 		this.clienteSelecionado = (Cliente) cbClientes.getSelectedItem();
 	}
