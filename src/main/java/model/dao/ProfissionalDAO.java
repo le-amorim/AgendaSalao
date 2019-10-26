@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import model.vo.Profissional;
 
+@SuppressWarnings("rawtypes")
 public class ProfissionalDAO implements BaseDAO {
 	
 	public Profissional salvar(Profissional profissional) {

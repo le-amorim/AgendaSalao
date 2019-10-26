@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -26,6 +25,7 @@ import controller.ControladoraCliente;
 import model.vo.Cliente;
 import javax.swing.ImageIcon;
 
+@SuppressWarnings("serial")
 public class TelaCadastroCliente extends JPanel {
 
 	private JTextField txtNome;
@@ -134,7 +134,7 @@ public class TelaCadastroCliente extends JPanel {
 		txtSobreNome.setColumns(10);
 		txtSobreNome.setBounds(110, 82, 179, 20);
 		add(txtSobreNome);
-		
+
 		JLabel lblNewLabel = new JLabel("New label");
 		lblNewLabel.setIcon(new ImageIcon(TelaCadastroCliente.class.getResource("/icones/deboche.gif")));
 		lblNewLabel.setBounds(0, 0, larguraDaTela, alturaDaTela);
@@ -143,10 +143,8 @@ public class TelaCadastroCliente extends JPanel {
 
 	protected void atualizarTabelaEmpregados() {
 		ControladoraCliente controller = new ControladoraCliente();
-		// clientes = controller.consultarTodos();
-
+		clientes = controller.consultarTodos();
 		ConstruirTabela();
-
 		DefaultTableModel model = (DefaultTableModel) tblConsultaCliente.getModel();
 
 		for (Cliente cliente : clientes) {
@@ -165,7 +163,7 @@ public class TelaCadastroCliente extends JPanel {
 	private void ConstruirTabela() {
 		tblConsultaCliente
 				.setModel(new DefaultTableModel(new Object[][] { colunasTabelaCliente, }, colunasTabelaCliente));
-	
+
 	}
 
 	Dimension dimensoesTela = Toolkit.getDefaultToolkit().getScreenSize();

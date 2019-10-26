@@ -17,7 +17,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 
 import controller.ControladoraFuncionario;
@@ -29,9 +28,8 @@ public class FrmPrimeiraTela extends JFrame {
 
 	private JPanel painelEsquerdo;
 	private JPanel painelDireito;
-	private String[] mes = { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro",
-			"Outubro", "Novembro", "Dezembro" };
 	private ArrayList<Profissional> profissionais;
+	@SuppressWarnings("rawtypes")
 	protected JComboBox cbProfissional;
 	protected TelaCadastroCliente telaCadastroCliente;
 	private JLabel lblImg;
@@ -56,6 +54,7 @@ public class FrmPrimeiraTela extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public FrmPrimeiraTela() {
 		
 		getContentPane().setLayout(null);

@@ -69,6 +69,7 @@ public class TelaDataHora {
 
 		JButton btnPegarData = new JButton("Criar data");
 		btnPegarData.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent arg0) {
 				// Atributos próprios do componente datePicker (date e time)
 				LocalDate dataSelecionada = dataTeste.getDatePicker().getDate();
@@ -81,6 +82,7 @@ public class TelaDataHora {
 				JOptionPane.showMessageDialog(null, "Data e hora selecionada: " + dataComHora.toString());
 
 				// Preenche uma data utilizando os dois campos do componente
+				@SuppressWarnings("unused")
 				Date dataCompleta = new Date(dataSelecionada.getYear(), dataSelecionada.getMonthValue(),
 						dataSelecionada.getDayOfMonth(), horaSelecionada.getHour(), horaSelecionada.getMinute(),
 						horaSelecionada.getSecond());

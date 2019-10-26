@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import model.vo.Agendamento;
 
+@SuppressWarnings("rawtypes")
 public class AgendamentoDAO implements BaseDAO {
 
 	public Object salvar(Object novaEntidade) {

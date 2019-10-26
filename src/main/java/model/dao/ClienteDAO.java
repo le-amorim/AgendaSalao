@@ -8,8 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import model.vo.Cliente;
-import model.vo.Profissional;
 
+@SuppressWarnings("rawtypes")
 public class ClienteDAO implements BaseDAO {
 
 	public Cliente salvar(Cliente cliente) {

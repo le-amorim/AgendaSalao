@@ -8,8 +8,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -24,13 +22,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.DateTimePicker;
 
 import controller.ControladoraAgendamento;
 import controller.ControladoraCliente;
-import controller.ControladoraFuncionario;
 import model.vo.Agendamento;
 import model.vo.Cliente;
 import model.vo.Profissional;
@@ -43,7 +39,6 @@ public class EstruturaAgenda extends JDialog {
 	private JTextField txtServico;
 	private JTable table;
 	private JTextField txtValor;
-	private ArrayList<Profissional> profissionais;
 	private Profissional profissionalSelecionado;
 	private Cliente clienteSelecionado;
 	private JLabel lblNomeProfissional;
@@ -66,6 +61,8 @@ public class EstruturaAgenda extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public EstruturaAgenda() {
 
 		DatePickerSettings dateSettings = new DatePickerSettings();
@@ -234,6 +231,7 @@ public class EstruturaAgenda extends JDialog {
 		lblNomeProfissional.setBounds(400, 12, 173, 22);
 		getContentPane().add(lblNomeProfissional);
 
+		
 		consultarClientes();
 		cbClientes = new JComboBox(clientes.toArray());
 		cbClientes.setSelectedIndex(-1);

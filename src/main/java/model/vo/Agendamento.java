@@ -1,7 +1,6 @@
 package model.vo;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 public class Agendamento {
 	private int idAgendamento;
