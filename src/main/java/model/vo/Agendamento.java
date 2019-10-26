@@ -8,18 +8,17 @@ public class Agendamento {
 	private Cliente cliente;
 	private Profissional profissional;
 	private LocalDateTime dataComHora;
-	private String situacao;
 	private String servico;
 	private Double valor;
 
 	public Agendamento(int idAgendamento, Cliente cliente, Profissional profissional, LocalDateTime dataComHora,
-			String situacao, String servico, Double valor) {
+			 String servico, Double valor) {
 		super();
 		this.idAgendamento = idAgendamento;
 		this.cliente = cliente;
 		this.profissional = profissional;
 		this.dataComHora = dataComHora;
-		this.situacao = situacao;
+		
 		this.servico = servico;
 		this.valor = valor;
 	}
@@ -35,7 +34,6 @@ public class Agendamento {
 		this.cliente = clienteSelecionado;
 		this.profissional = profissionalSelecionado;
 		this.dataComHora = dataComHoraSelecionada;
-		this.situacao = situacao;
 		this.servico = servicoDigitado;
 		this.valor = Double.parseDouble(valorDigitado);
 
@@ -89,12 +87,5 @@ public class Agendamento {
 		this.dataComHora = dataComHora;
 	}
 
-	public String getSituacao() {
-		return situacao;
-	}
-
-	public void setSituacao(String situacao) {
-		this.situacao = situacao;
-	}
 
 }
