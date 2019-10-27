@@ -20,6 +20,7 @@ import javax.swing.border.LineBorder;
 import controller.ControladoraFuncionario;
 import model.vo.Profissional;
 import javax.swing.border.BevelBorder;
+import javax.swing.JButton;
 
 @SuppressWarnings("serial")
 public class FrmPrimeiraTela extends JFrame {
@@ -175,6 +176,11 @@ public class FrmPrimeiraTela extends JFrame {
 		label.setIcon(new ImageIcon(FrmPrimeiraTela.class.getResource("/icones/foto.png")));
 		label.setBounds(0, 0, 219, 225);
 		painelEsquerdo.add(label);
+		
+		JButton btnPesquisar = new JButton("");
+		btnPesquisar.setBounds(20, 265, 26, 20);
+		painelEsquerdo.add(btnPesquisar);
+		btnPesquisar.setIcon(new ImageIcon(FrmPrimeiraTela.class.getResource("/icones/lupa.png")));
 	}
 
 		ArrayList<Profissional> consultarProfissional() {
