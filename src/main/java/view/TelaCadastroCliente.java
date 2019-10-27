@@ -7,9 +7,11 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -20,6 +22,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
+import javax.swing.text.MaskFormatter;
 
 import controller.ControladoraCliente;
 import model.vo.Cliente;
@@ -29,13 +32,13 @@ import javax.swing.ImageIcon;
 public class TelaCadastroCliente extends JPanel {
 
 	private JTextField txtNome;
-	private JTextField txtTelefone;
 	private Component txtObservacao;
 	private JButton btnLimpar;
 	private JTable tblConsultaCliente;
 	private String[] colunasTabelaCliente = { "Nome", "Telefone", "Observação" };
 	private ArrayList<Cliente> clientes;
 	private JTextField txtSobreNome;
+	private JFormattedTextField fmtTelefone;
 
 	public TelaCadastroCliente() {
 		setBackground(Color.LIGHT_GRAY);
@@ -61,11 +64,6 @@ public class TelaCadastroCliente extends JPanel {
 		lblTelefone.setBounds(27, 116, 77, 14);
 		this.add(lblTelefone);
 
-		txtTelefone = new JTextField();
-		txtTelefone.setColumns(10);
-		txtTelefone.setBounds(110, 113, 179, 20);
-		this.add(txtTelefone);
-
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -73,7 +71,7 @@ public class TelaCadastroCliente extends JPanel {
 
 				String nomeCliente = txtNome.getText();
 				String sobreNomeCliente = txtSobreNome.getText();
-				String TelefoneCliente = txtTelefone.getText();
+				String TelefoneCliente = fmtTelefone.getText();
 				String observacaoCliente = ((JTextComponent) txtObservacao).getText();
 				String mensagem = "";
 				mensagem += controladora.validar(nomeCliente, sobreNomeCliente, TelefoneCliente, observacaoCliente);
@@ -97,7 +95,7 @@ public class TelaCadastroCliente extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				txtNome.setText("");
 				txtSobreNome.setText("");
-				txtTelefone.setText("");
+				fmtTelefone.setText("");
 				((JTextComponent) txtObservacao).setText("");
 			}
 		});
@@ -139,6 +137,15 @@ public class TelaCadastroCliente extends JPanel {
 		lblNewLabel.setIcon(new ImageIcon(TelaCadastroCliente.class.getResource("/icones/deboche.gif")));
 		lblNewLabel.setBounds(0, 0, larguraDaTela, alturaDaTela);
 		add(lblNewLabel);
+
+		try {
+			MaskFormatter mascaraTelefone = new MaskFormatter("(##)#####-####");
+			fmtTelefone = new JFormattedTextField(mascaraTelefone);
+			fmtTelefone.setBounds(110, 113, 179, 20);
+			add(fmtTelefone);
+		} catch (ParseException e) {
+		}
+
 	}
 
 	protected void atualizarTabelaEmpregados() {
