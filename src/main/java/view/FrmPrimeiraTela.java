@@ -94,6 +94,7 @@ public class FrmPrimeiraTela extends JFrame {
 					revalidate();
 					repaint();
 					lblImg.setVisible(false);
+					telaCadastroCliente.atualizarTabelaClientes();
 				}
 			}
 		});
@@ -178,12 +179,18 @@ public class FrmPrimeiraTela extends JFrame {
 		painelEsquerdo.add(label);
 		
 		JButton btnPesquisar = new JButton("");
+		btnPesquisar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			TelaConsultaAgendamento tela = new TelaConsultaAgendamento();
+			tela.setVisible(true);
+			}
+		});
 		btnPesquisar.setBounds(20, 265, 26, 20);
 		painelEsquerdo.add(btnPesquisar);
 		btnPesquisar.setIcon(new ImageIcon(FrmPrimeiraTela.class.getResource("/icones/lupa.png")));
 	}
 
-		ArrayList<Profissional> consultarProfissional() {
+		 ArrayList<Profissional> consultarProfissional() {
 		ControladoraFuncionario controladora = new ControladoraFuncionario();
 		return profissionais = controladora.consultarTodos();
 	}

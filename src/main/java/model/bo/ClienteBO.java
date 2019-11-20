@@ -20,4 +20,10 @@ public class ClienteBO {
 		return dao.consultarTodos();
 	}
 
+
+	public boolean excluirCliente(int linhaSelecionada) {
+		// TODO Auto-generated method stub
+		return dao.excluirCliente(linhaSelecionada);
+	}
+
 }

@@ -108,12 +108,14 @@ public class TelaCadastroCliente2 extends JDialog {
 
 				String nomeCliente = txtNome2.getText();
 				String sobreNomeCliente = txtSobreNome2.getText();
-				String TelefoneCliente = fmtTelefone.getText();
+				String telefoneCliente = fmtTelefone.getText();
+				telefoneCliente.replaceAll("()","");
+				telefoneCliente.replaceAll("-","");
 				String observacaoCliente = ((JTextComponent) txtPaneObs).getText();
 				String mensagem = "";
-				mensagem += controladora.validar(nomeCliente, sobreNomeCliente, TelefoneCliente, observacaoCliente);
+				mensagem += controladora.validar(nomeCliente, sobreNomeCliente, telefoneCliente, observacaoCliente);
 				if (mensagem.isEmpty()) {
-					Cliente cliente = new Cliente(nomeCliente, sobreNomeCliente, TelefoneCliente, observacaoCliente);
+					Cliente cliente = new Cliente(nomeCliente, sobreNomeCliente, telefoneCliente, observacaoCliente);
 					cliente = controladora.salvar(cliente);
 					JOptionPane.showMessageDialog(null, "salvo com sucesso!");
 					FrmPrimeiraTela tela = new FrmPrimeiraTela();

@@ -37,5 +37,11 @@ public class ControladoraCliente {
 		return bo.consultarTodos();
 	}
 
+	public boolean excluirCliente(int linhaSelecionada) {
+	
+	
+		return bo.excluirCliente(linhaSelecionada);	
+	}
+
 
 }

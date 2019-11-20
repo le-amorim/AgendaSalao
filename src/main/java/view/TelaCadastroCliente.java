@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -23,7 +22,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.MaskFormatter;
-
 import controller.ControladoraCliente;
 import model.vo.Cliente;
 import javax.swing.ImageIcon;
@@ -35,16 +33,37 @@ public class TelaCadastroCliente extends JPanel {
 	private Component txtObservacao;
 	private JButton btnLimpar;
 	private JTable tblConsultaCliente;
-	private String[] colunasTabelaCliente = { "Nome", "Telefone", "Observação" };
 	private ArrayList<Cliente> clientes;
 	private JTextField txtSobreNome;
 	private JFormattedTextField fmtTelefone;
+	protected int linhaSelecionada;
 
 	public TelaCadastroCliente() {
 		setBackground(Color.LIGHT_GRAY);
-		setBounds(0, 0, 450, 600);
+		setBounds(0, 0, 481, 616);
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.setLayout(null);
+		
+					JButton btnExcluirCliente = new JButton("Excluir Cliente");
+					btnExcluirCliente.addActionListener(new ActionListener() {
+
+						public void actionPerformed(ActionEvent e) {
+
+							DefaultTableModel model = (DefaultTableModel) tblConsultaCliente.getModel();
+							if (tblConsultaCliente.getSelectedRow() >= 0) {
+								model.removeRow(tblConsultaCliente.getSelectedRow());
+								linhaSelecionada = tblConsultaCliente.getSelectedRow();
+								tblConsultaCliente.getValueAt(linhaSelecionada,-1);
+								tblConsultaCliente.setModel(model);
+								excluirClienteSelecionado();
+							} else {
+								JOptionPane.showMessageDialog(null, "Favor selecionar uma linha");
+							}
+
+						}
+					});
+					btnExcluirCliente.setBounds(328, 582, 122, 23);
+					add(btnExcluirCliente);
 
 		JLabel lblCadastroDeCliente = new JLabel("Cadastro De Cliente");
 		lblCadastroDeCliente.setFont(new Font("Segoe Script", Font.BOLD, 13));
@@ -52,7 +71,7 @@ public class TelaCadastroCliente extends JPanel {
 		this.add(lblCadastroDeCliente);
 
 		JLabel lblNome = new JLabel("Nome");
-		lblNome.setBounds(34, 54, 46, 14);
+		lblNome.setBounds(54, 54, 46, 14);
 		this.add(lblNome);
 
 		txtNome = new JTextField();
@@ -61,7 +80,7 @@ public class TelaCadastroCliente extends JPanel {
 		txtNome.setColumns(10);
 
 		JLabel lblTelefone = new JLabel("Telefone");
-		lblTelefone.setBounds(27, 116, 77, 14);
+		lblTelefone.setBounds(34, 115, 46, 17);
 		this.add(lblTelefone);
 
 		JButton btnSalvar = new JButton("Salvar");
@@ -71,16 +90,19 @@ public class TelaCadastroCliente extends JPanel {
 
 				String nomeCliente = txtNome.getText();
 				String sobreNomeCliente = txtSobreNome.getText();
-				String TelefoneCliente = fmtTelefone.getText();
+				String telefoneCliente = fmtTelefone.getText();
+				telefoneCliente.replaceAll("()" ,  "");
+				telefoneCliente.replaceAll("-"  ,  "");
 				String observacaoCliente = ((JTextComponent) txtObservacao).getText();
 				String mensagem = "";
-				mensagem += controladora.validar(nomeCliente, sobreNomeCliente, TelefoneCliente, observacaoCliente);
+				mensagem += controladora.validar(nomeCliente, sobreNomeCliente, telefoneCliente, observacaoCliente);
 				if (mensagem.isEmpty()) {
-					Cliente cliente = new Cliente(nomeCliente, sobreNomeCliente, TelefoneCliente, observacaoCliente);
+					Cliente cliente = new Cliente(nomeCliente, sobreNomeCliente, telefoneCliente, observacaoCliente);
 					cliente = controladora.salvar(cliente);
 					JOptionPane.showMessageDialog(null, "salvo com sucesso!");
 					FrmPrimeiraTela tela = new FrmPrimeiraTela();
 					tela.consultarProfissional();
+					atualizarTabelaClientes();
 				} else {
 					JOptionPane.showMessageDialog(null, mensagem);
 				}
@@ -103,7 +125,7 @@ public class TelaCadastroCliente extends JPanel {
 		this.add(btnLimpar);
 
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(0, 284, 406, 10);
+		separator_1.setBounds(0, 284, 450, 10);
 		this.add(separator_1);
 
 		txtObservacao = new JTextArea();
@@ -111,17 +133,18 @@ public class TelaCadastroCliente extends JPanel {
 		this.add(txtObservacao);
 
 		JLabel lblObservacao = new JLabel("Observação:");
-		lblObservacao.setBounds(34, 162, 77, 14);
+		lblObservacao.setBounds(27, 160, 62, 14);
 		this.add(lblObservacao);
 
 		JLabel lblConsultaDeCliente = new JLabel("Consulta de Cliente");
 		lblConsultaDeCliente.setForeground(Color.BLACK);
 		lblConsultaDeCliente.setFont(new Font("Segoe Script", Font.BOLD | Font.ITALIC, 13));
-		lblConsultaDeCliente.setBounds(110, 321, 196, 14);
+		lblConsultaDeCliente.setBounds(150, 295, 196, 14);
 		this.add(lblConsultaDeCliente);
 
 		tblConsultaCliente = new JTable();
-		tblConsultaCliente.setBounds(10, 346, 396, 224);
+		tblConsultaCliente.setBounds(10, 320, 461, 246);
+		construirTabelaClientes();
 		this.add(tblConsultaCliente);
 
 		JLabel lblSobreNome = new JLabel("SobreNome");
@@ -148,16 +171,21 @@ public class TelaCadastroCliente extends JPanel {
 
 	}
 
-	protected void atualizarTabelaEmpregados() {
+	protected void excluirClienteSelecionado() {
+		ControladoraCliente controller = new ControladoraCliente();
+		controller.excluirCliente(linhaSelecionada);
+
+	}
+
+	protected void atualizarTabelaClientes() {
 		ControladoraCliente controller = new ControladoraCliente();
 		clientes = controller.consultarTodos();
-		ConstruirTabela();
+		construirTabelaClientes();
 		DefaultTableModel model = (DefaultTableModel) tblConsultaCliente.getModel();
-
 		for (Cliente cliente : clientes) {
-			String[] novaLinha = new String[5];
+			String[] novaLinha = new String[4];
 			novaLinha[0] = cliente.getNome();
-			novaLinha[1] = cliente.getNome();
+			novaLinha[1] = cliente.getSobreNome();
 			novaLinha[2] = cliente.getTelefone();
 			novaLinha[3] = cliente.getObservacao();
 
@@ -167,13 +195,15 @@ public class TelaCadastroCliente extends JPanel {
 		}
 	}
 
-	private void ConstruirTabela() {
-		tblConsultaCliente
-				.setModel(new DefaultTableModel(new Object[][] { colunasTabelaCliente, }, colunasTabelaCliente));
-
-	}
-
 	Dimension dimensoesTela = Toolkit.getDefaultToolkit().getScreenSize();
 	int larguraDaTela = (int) dimensoesTela.getWidth();
 	int alturaDaTela = (int) (dimensoesTela.getHeight() - 100);
+
+	private void construirTabelaClientes() {
+
+		tblConsultaCliente
+				.setModel(new DefaultTableModel(new String[][] { { "Nome", "Sobrenome", "telefone", "Observação " }, },
+						new String[] { "Nome", "Sobrenome", "telefone", "Observação " }));
+
+	}
 }

@@ -7,17 +7,17 @@ public class Agendamento {
 	private Cliente cliente;
 	private Profissional profissional;
 	private LocalDateTime dataComHora;
-	private String servico;
+	private Servico servico;
 	private Double valor;
 
 	public Agendamento(int idAgendamento, Cliente cliente, Profissional profissional, LocalDateTime dataComHora,
-			 String servico, Double valor) {
+			Servico servico, Double valor) {
 		super();
 		this.idAgendamento = idAgendamento;
 		this.cliente = cliente;
 		this.profissional = profissional;
 		this.dataComHora = dataComHora;
-		
+
 		this.servico = servico;
 		this.valor = valor;
 	}
@@ -27,22 +27,21 @@ public class Agendamento {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Agendamento(Cliente clienteSelecionado, Profissional profissionalSelecionado, String servicoDigitado,
-			String valorDigitado, LocalDateTime dataComHoraSelecionada) {
-
+	public Agendamento(Cliente clienteSelecionado, Profissional profissionalSelecionado, Servico servicoSelecionado,
+			String valorDigitado, LocalDateTime dataComHoraSelecionado) {
 		this.cliente = clienteSelecionado;
 		this.profissional = profissionalSelecionado;
-		this.dataComHora = dataComHoraSelecionada;
-		this.servico = servicoDigitado;
+		this.servico = servicoSelecionado;
+		this.dataComHora = dataComHoraSelecionado;
 		this.valor = Double.parseDouble(valorDigitado);
 
 	}
 
-	public String getServico() {
+	public Servico getServico() {
 		return servico;
 	}
 
-	public void setServico(String servico) {
+	public void setServico(Servico servico) {
 		this.servico = servico;
 	}
 
@@ -85,6 +84,5 @@ public class Agendamento {
 	public void setDataComHora(LocalDateTime dataComHora) {
 		this.dataComHora = dataComHora;
 	}
-
 
 }

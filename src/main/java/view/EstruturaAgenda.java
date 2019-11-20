@@ -10,6 +10,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -21,22 +22,20 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
-
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.DateTimePicker;
-
 import controller.ControladoraAgendamento;
 import controller.ControladoraCliente;
+import controller.ControladoraServico;
 import model.vo.Agendamento;
 import model.vo.Cliente;
 import model.vo.Profissional;
-import javax.swing.JComboBox;
+import model.vo.Servico;
 
 @SuppressWarnings("serial")
 public class EstruturaAgenda extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private JTextField txtServico;
 	private JTable table;
 	private JTextField txtValor;
 	private Profissional profissionalSelecionado;
@@ -44,6 +43,10 @@ public class EstruturaAgenda extends JDialog {
 	private JLabel lblNomeProfissional;
 	private JComboBox<Cliente> cbClientes;
 	private ArrayList<Cliente> clientes;
+	private JComboBox<Servico> cbServico;
+	private ArrayList<Servico> servicos;
+	private Servico servicoSelecionado;
+
 
 	/**
 	 * Launch the application.
@@ -61,7 +64,7 @@ public class EstruturaAgenda extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public EstruturaAgenda() {
 
@@ -75,11 +78,9 @@ public class EstruturaAgenda extends JDialog {
 		JButton btnPegarData = new JButton("Criar data");
 		btnPegarData.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// Atributos próprios do componente datePicker (date e time)
 				LocalDate dataSelecionada = dataComHora.getDatePicker().getDate();
 				LocalTime horaSelecionada = dataComHora.getTimePicker().getTime();
 				LocalDateTime dataComHora = LocalDateTime.of(dataSelecionada, horaSelecionada);
-
 				JOptionPane.showMessageDialog(null, "Data selecionada: " + dataSelecionada.toString());
 				JOptionPane.showMessageDialog(null, "Horário selecionado: " + horaSelecionada.toString());
 				JOptionPane.showMessageDialog(null, "Data e hora selecionada: " + dataComHora.toString());
@@ -88,13 +89,15 @@ public class EstruturaAgenda extends JDialog {
 		});
 
 		this.setModal(true);
-		setBounds(203, 67, 689, 468);
+		setBounds(203, 67, 900, 601);
 		getContentPane().setLayout(null);
 		contentPanel.setBounds(0, 0, 649, 1);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel);
 		contentPanel.setLayout(null);
-
+		
+		
+		
 		JLabel lblAgendamento = new JLabel("Agendamento de ");
 		lblAgendamento.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 20));
 		lblAgendamento.setBounds(231, 12, 173, 22);
@@ -105,15 +108,10 @@ public class EstruturaAgenda extends JDialog {
 		lblCliente.setBounds(33, 108, 46, 14);
 		getContentPane().add(lblCliente);
 
-		JLabel lblServico = new JLabel("Serviço\r\n");
+		JLabel lblServico = new JLabel("Serviço\r\n:");
 		lblServico.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblServico.setBounds(36, 142, 46, 14);
 		getContentPane().add(lblServico);
-
-		txtServico = new JTextField();
-		txtServico.setBounds(96, 135, 204, 29);
-		getContentPane().add(txtServico);
-		txtServico.setColumns(10);
 
 		JLabel lblHorario = new JLabel("Data/hora");
 		lblHorario.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -124,27 +122,28 @@ public class EstruturaAgenda extends JDialog {
 			btnSalvar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					ControladoraAgendamento controladora = new ControladoraAgendamento();
-					String servicoDigitado = txtServico.getText();
+					Servico servicoSelecionado = getServicoSelecionado();
 					String valorDigitado = txtValor.getText();
+					valorDigitado.replaceAll(",", ".");
 					LocalDate dataSelecionada = dataComHora.getDatePicker().getDate();
 					LocalTime horaSelecionada = dataComHora.getTimePicker().getTime();
 					Profissional profissionalSelecionado = getProfissionalSelecionado();
 					Cliente clienteSelecionado = getClienteSelecionado();
 					LocalDateTime dataComHoraSelecionado = LocalDateTime.of(dataSelecionada, horaSelecionada);
 					String mensagem = "";
-					mensagem += ControladoraAgendamento.validar(servicoDigitado, valorDigitado,
+					mensagem += ControladoraAgendamento.validar(servicoSelecionado, valorDigitado,
 							profissionalSelecionado);
-					
+
 					if (mensagem.isEmpty()) {
 						Agendamento agendamento = new Agendamento(clienteSelecionado, profissionalSelecionado,
-								servicoDigitado, valorDigitado, dataComHoraSelecionado);
-					agendamento = controladora.salvar(agendamento);
+								servicoSelecionado, valorDigitado, dataComHoraSelecionado);
+						agendamento = controladora.salvar(agendamento);
 					} else {
 						JOptionPane.showMessageDialog(null, mensagem);
 					}
 				}
 			});
-			btnSalvar.setBounds(603, 377, 46, 41);
+			btnSalvar.setBounds(401, 452, 46, 41);
 			getContentPane().add(btnSalvar);
 			btnSalvar.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/Save.png")));
 			btnSalvar.setActionCommand("OK");
@@ -153,37 +152,33 @@ public class EstruturaAgenda extends JDialog {
 		{
 			JButton btnLimpar = new JButton("");
 			btnLimpar.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					txtServico.setText("");
+				public void actionPerformed(ActionEvent e) {				
 					txtValor.setText("");
 					cbClientes.setSelectedIndex(-1);
+					cbServico.setSelectedIndex(-1);
 
 				}
 			});
 			btnLimpar.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/limpar.png")));
-			btnLimpar.setBounds(479, 377, 53, 41);
+			btnLimpar.setBounds(330, 452, 53, 41);
 			getContentPane().add(btnLimpar);
 			btnLimpar.setActionCommand("Cancel");
 		}
 
 		JButton btnCancelar = new JButton("");
-		btnCancelar.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/delete.png")));
-		btnCancelar.setActionCommand("Delete");
-		btnCancelar.setBounds(542, 377, 51, 41);
-		getContentPane().add(btnCancelar);
-
-		JButton btnAlterar = new JButton("");
-		btnAlterar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+			
 			}
 		});
-		btnAlterar.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/relogio.png")));
-		btnAlterar.setActionCommand("OK");
-		btnAlterar.setBounds(423, 377, 46, 41);
-		getContentPane().add(btnAlterar);
+		btnCancelar.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/delete.png")));
+		btnCancelar.setActionCommand("Delete");
+		btnCancelar.setBounds(263, 452, 51, 41);
+		getContentPane().add(btnCancelar);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(95, 167, 442, 196);
+		scrollPane.setBounds(95, 204, 442, 238);
 		getContentPane().add(scrollPane);
 
 		JPanel panel = new JPanel();
@@ -216,14 +211,14 @@ public class EstruturaAgenda extends JDialog {
 		table.getColumnModel().getColumn(0).setPreferredWidth(46);
 		panel.add(table);
 
-		txtValor = new JTextField();
-		txtValor.setBounds(346, 135, 43, 29);
+		txtValor = new JNumberFormatField(2);
+		txtValor.setBounds(346, 135, 49, 29);
 		getContentPane().add(txtValor);
-		txtValor.setColumns(10);
+		//txtValor.setColumns(10);
 
 		JLabel lblValor = new JLabel("");
 		lblValor.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/money.png")));
-		lblValor.setBounds(343, 92, 46, 35);
+		lblValor.setBounds(343, 92, 52, 35);
 		getContentPane().add(lblValor);
 
 		lblNomeProfissional = new JLabel("");
@@ -231,7 +226,6 @@ public class EstruturaAgenda extends JDialog {
 		lblNomeProfissional.setBounds(400, 12, 173, 22);
 		getContentPane().add(lblNomeProfissional);
 
-		
 		consultarClientes();
 		cbClientes = new JComboBox(clientes.toArray());
 		cbClientes.setSelectedIndex(-1);
@@ -254,6 +248,23 @@ public class EstruturaAgenda extends JDialog {
 		btnAddCliente.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/plus.png")));
 		btnAddCliente.setBounds(5, 104, 24, 23);
 		getContentPane().add(btnAddCliente);
+
+		consultarServicos();
+		cbServico = new JComboBox(servicos.toArray());
+		cbServico.setBounds(95, 139, 204, 30);
+		cbServico.setSelectedIndex(-1);
+		getContentPane().add(cbServico);
+
+		JButton button = new JButton("");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			TelaCadastroServico tela = new TelaCadastroServico();
+			tela.setVisible(true);
+			}
+		});
+		button.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/plus.png")));
+		button.setBounds(5, 141, 24, 23);
+		getContentPane().add(button);
 	}
 
 	public Profissional getProfissionalSelecionado() {
@@ -265,9 +276,25 @@ public class EstruturaAgenda extends JDialog {
 		this.profissionalSelecionado = profissionalSelecionado;
 	}
 
+	public Servico getServicoSelecionado() {
+		return servicoSelecionado;
+	}
+
+	public void setServicoSelecionado(Servico servicoSelecionado) {
+		this.servicoSelecionado = servicoSelecionado;
+	}
+
 	ArrayList<Cliente> consultarClientes() {
 		ControladoraCliente controladora = new ControladoraCliente();
 		return clientes = controladora.consultarTodos();
+	}
+
+	ControladoraServico controladoraServico = new ControladoraServico();
+
+	ArrayList<Servico> consultarServicos() {
+		ControladoraServico controladoraServico = new ControladoraServico();
+		return servicos = controladoraServico.consultarTodos();
+
 	}
 
 	public Cliente getClienteSelecionado() {

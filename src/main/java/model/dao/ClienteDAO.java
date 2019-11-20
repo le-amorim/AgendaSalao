@@ -41,21 +41,6 @@ public class ClienteDAO implements BaseDAO {
 		return cliente;
 	}
 
-	public boolean excluir(int id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean alterar(Object entidade) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public Object consultarPorId(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public ArrayList<Cliente> consultarTodos() {
 		Connection conn = Banco.getConnection();
 		Statement stmt = Banco.getStatement(conn);
@@ -84,11 +69,6 @@ public class ClienteDAO implements BaseDAO {
 
 	}
 
-	public Object salvar(Object novaEntidade) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	private Cliente construirDoResultSet(ResultSet result) {
 		Cliente novoCliente = new Cliente();
 		try {
@@ -101,5 +81,44 @@ public class ClienteDAO implements BaseDAO {
 			System.out.println("Erro ao construir Apartir Do ResultSet");
 		}
 		return novoCliente;
+	}
+
+	public boolean excluirCliente(int linhaSelecionada) {
+		Connection conn = Banco.getConnection();
+		Statement stmt = Banco.getStatement(conn);
+		int resultado = 0;
+
+		String query = "DELETE FROM Cliente WHERE linhaSelecionada = " + linhaSelecionada;
+		try {
+			resultado = stmt.executeUpdate(query);
+		} catch (SQLException e) {
+			System.out.println("Erro ao executar a Query de Exclusão do Usuário.");
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closeStatement(stmt);
+			Banco.closeConnection(conn);
+		}
+
+		return (resultado > 0);
+	}
+
+	public Object consultarPorId(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean excluir(int id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean alterar(Object entidade) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public Object salvar(Object novaEntidade) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
