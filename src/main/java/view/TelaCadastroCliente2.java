@@ -107,11 +107,14 @@ public class TelaCadastroCliente2 extends JDialog {
 				ControladoraCliente controladora = new ControladoraCliente();
 
 				String nomeCliente = txtNome2.getText();
+				nomeCliente.toUpperCase();
 				String sobreNomeCliente = txtSobreNome2.getText();
+				sobreNomeCliente.toUpperCase();
 				String telefoneCliente = fmtTelefone.getText();
-				telefoneCliente.replaceAll("()","");
-				telefoneCliente.replaceAll("-","");
+				telefoneCliente.replaceAll("()", "");
+				telefoneCliente.replaceAll("-", "");
 				String observacaoCliente = ((JTextComponent) txtPaneObs).getText();
+				observacaoCliente.toUpperCase();
 				String mensagem = "";
 				mensagem += controladora.validar(nomeCliente, sobreNomeCliente, telefoneCliente, observacaoCliente);
 				if (mensagem.isEmpty()) {
@@ -176,6 +179,7 @@ public class TelaCadastroCliente2 extends JDialog {
 			fmtTelefone.setBounds(83, 150, 158, 20);
 			contentPanel.add(fmtTelefone);
 		} catch (ParseException e) {
+		System.out.println("Erro ao construir formatador " + e);
 		}
 
 	}

@@ -116,14 +116,14 @@ public class AgendamentoDAO implements BaseDAO {
 			agendamento.getProfissional().setIdProfissional(result.getInt("IDPROFISSIONAL"));
 			agendamento.getCliente().setIdCliente(result.getInt("IDCLIENTE"));
 			agendamento.getServico().setIdservico(result.getInt("IDSERVICO"));
-			//agendamento.setDataComHora(result.getDate("DATACOMHORA").toLocalDate()));
+			//agendamento.setDataComHora(result.getDate("DATACOMHORA"));
 			agendamento.setValor(result.getDouble("VALOR"));
 		} catch (SQLException e) {
 			System.out.println("não foi possivel Construir Apartir do ResultSet");
 			System.out.println("Erro " + e );
 		}
 		
-		
+		 
 		
 		
 		return agendamento;

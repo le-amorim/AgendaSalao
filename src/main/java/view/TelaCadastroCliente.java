@@ -53,7 +53,7 @@ public class TelaCadastroCliente extends JPanel {
 							if (tblConsultaCliente.getSelectedRow() >= 0) {
 								model.removeRow(tblConsultaCliente.getSelectedRow());
 								linhaSelecionada = tblConsultaCliente.getSelectedRow();
-								tblConsultaCliente.getValueAt(linhaSelecionada,-1);
+								tblConsultaCliente.getValueAt(linhaSelecionada, 0);
 								tblConsultaCliente.setModel(model);
 								excluirClienteSelecionado();
 							} else {
@@ -184,10 +184,10 @@ public class TelaCadastroCliente extends JPanel {
 		DefaultTableModel model = (DefaultTableModel) tblConsultaCliente.getModel();
 		for (Cliente cliente : clientes) {
 			String[] novaLinha = new String[4];
-			novaLinha[0] = cliente.getNome();
-			novaLinha[1] = cliente.getSobreNome();
-			novaLinha[2] = cliente.getTelefone();
-			novaLinha[3] = cliente.getObservacao();
+			novaLinha[0] = cliente.getNome().toUpperCase();
+			novaLinha[1] = cliente.getSobreNome().toUpperCase();
+			novaLinha[2] = cliente.getTelefone().toUpperCase();
+			novaLinha[3] = cliente.getObservacao().toUpperCase();
 
 			// Adiciona a nova linha na tabela
 			model.addRow(novaLinha);

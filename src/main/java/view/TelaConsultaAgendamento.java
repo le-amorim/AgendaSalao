@@ -50,7 +50,6 @@ public class TelaConsultaAgendamento extends JDialog {
 	private JTable tblAvacada;
 	DateTimeFormatter dataFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private JTable tblCliente;
-	private String[] colunasTabelaCliente = { "Data", "Nome", "Servico", "Telefone", "Valor" };
 	private ArrayList<Agendamento> agendamentos;
 	private DatePicker dataInicial;
 	private DatePicker dataFinal;
@@ -154,15 +153,15 @@ public class TelaConsultaAgendamento extends JDialog {
 		tblAvacada.setBounds(27, 30, 536, 180);
 		contentPanel.add(tblAvacada);
 
-		JLabel lblTabelaDeClientes = new JLabel("Tabela de Clientes");
-		lblTabelaDeClientes.setFont(new Font("Segoe Script", Font.ITALIC, 19));
-		lblTabelaDeClientes.setBounds(176, 253, 217, 20);
-		contentPanel.add(lblTabelaDeClientes);
-		
-				lblPaginaAtual = new JLabel("1");
-				lblPaginaAtual.setBounds(286, 537, 46, 14);
-				((JLabel) lblPaginaAtual).setText(paginaAtual + "");
-				contentPanel.add(lblPaginaAtual);
+		JLabel lblTabelaDeAgendamento = new JLabel("Tabela de Agendamento");
+		lblTabelaDeAgendamento.setFont(new Font("Segoe Script", Font.ITALIC, 19));
+		lblTabelaDeAgendamento.setBounds(176, 253, 256, 20);
+		contentPanel.add(lblTabelaDeAgendamento);
+
+		lblPaginaAtual = new JLabel("1");
+		lblPaginaAtual.setBounds(286, 537, 46, 14);
+		((JLabel) lblPaginaAtual).setText(paginaAtual + "");
+		contentPanel.add(lblPaginaAtual);
 
 		tblCliente = new JTable();
 		tblCliente.setBorder(UIManager.getBorder("PopupMenu.border"));
@@ -191,7 +190,7 @@ public class TelaConsultaAgendamento extends JDialog {
 	}
 
 	private void consultarAgendamentos() {
-		
+
 		((JLabel) lblPaginaAtual).setText(paginaAtual + "");
 
 		ControladoraAgendamento controller = new ControladoraAgendamento();
@@ -218,30 +217,26 @@ public class TelaConsultaAgendamento extends JDialog {
 
 	private void atualizarTabelaAgendamento(List<Agendamento> agendamentos) {
 		agendamentosConsultado = agendamentos;
-		
-		tblCliente.setModel(new DefaultTableModel(new String[][] { { "IDAgendamento", "Cliente", "Serviço", "Telefone", "Data" }, },
-				new String[] { "IDAgendamento", "Cliente", "Serviço", "Telefone", "Data" }));
 
-	
+		tblCliente.setModel(new DefaultTableModel(
+				new String[][] { { "IDAgendamento", "Cliente", "Profissional", "Serviço", "Valor", "Data" }, },
+				new String[] { "IDAgendamento", "Cliente", "Profissional", "Serviço", "Valor", "Data" }));
+
 		DefaultTableModel model = (DefaultTableModel) tblCliente.getModel();
+		
 		for (Agendamento agendamento : agendamentos) {
-			
+
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-			String dataFormatada = agendamento.getDataComHora().format(formatter);	
+			String dataFormatada = agendamento.getDataComHora().format(formatter);
 
 			String[] novaLinha = new String[] { agendamento.getIdAgendamento() + "",
-					agendamento.getCliente().getNome() + "", agendamento.getServico().getServico(),
-					agendamento.getCliente().getTelefone() + "", agendamento.getValor() + "", dataFormatada };
-			model.addRow(novaLinha);
+					agendamento.getCliente().getNome() + "", agendamento.getProfissional().getNome(),
+					agendamento.getServico().getServico() + "", agendamento.getValor() + "", dataFormatada };
+					model.addRow(novaLinha);
 		}
 
-	
-	
 	}
 
-	
-
-	
 	private ArrayList<Servico> consultarServico() {
 		ControladoraServico controller = new ControladoraServico();
 		return servicos = controller.consultarTodos();
@@ -253,8 +248,4 @@ public class TelaConsultaAgendamento extends JDialog {
 
 	}
 
-
-	private void ConstruirTabela() {
-		tblCliente.setModel(new DefaultTableModel(new Object[][] { colunasTabelaCliente, }, colunasTabelaCliente));
-	}
 }
