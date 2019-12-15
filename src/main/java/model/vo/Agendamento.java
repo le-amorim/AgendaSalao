@@ -17,7 +17,6 @@ public class Agendamento {
 		this.cliente = cliente;
 		this.profissional = profissional;
 		this.dataComHora = dataComHora;
-
 		this.servico = servico;
 		this.valor = valor;
 	}

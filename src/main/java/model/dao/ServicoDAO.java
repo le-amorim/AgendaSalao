@@ -6,35 +6,44 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+
 import model.vo.Servico;
 
-public class ServicoDAO implements BaseDAO {
+public class ServicoDAO {
 
-	public Object salvar(Object novaEntidade) {
-		// TODO Auto-generated method stub
-		return null;
+
+	public Servico consultarPorId(int idServico) {
+		Connection conexao = Banco.getConnection();
+		String sql = " SELECT * FROM SERVICO WHERE IDSERVICO=?";
+		ResultSet resultadoDaConsulta = null;
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+		Servico servicoSelecionado = null;
+		try {
+			stmt.setInt(1, idServico);
+			resultadoDaConsulta = stmt.executeQuery();
+
+			if (resultadoDaConsulta.next()) {
+				servicoSelecionado = construirDoResultSet(resultadoDaConsulta);
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar profissional por id: " + idServico);
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closeResultSet(resultadoDaConsulta);
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
+		}
+
+		return servicoSelecionado;
+		
 	}
 
-	public boolean excluir(int id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean alterar(Object entidade) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public Object consultarPorId(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public ArrayList consultarTodos() {
+	public ArrayList<Servico> consultarTodos() {
 		Connection conn = Banco.getConnection();
 		Statement stmt = Banco.getStatement(conn);
 		ResultSet result = null;
-		String sql = "SELECT * FROM SERVICO";
+		String sql = "SELECT * FROM SERVICO ORDER BY SERVICO ASC";
 		ArrayList<Servico> servicos = new ArrayList<Servico>();
 
 		try {
@@ -63,7 +72,7 @@ public class ServicoDAO implements BaseDAO {
 			novoServico.setIdservico((result.getInt("IDSERVICO")));
 			novoServico.setServico(result.getString("SERVICO"));
 		} catch (SQLException e) {
-			System.out.println("Erro ao construir Apartir Do ResultSet");
+			System.out.println("Erro ao construir Apartir Do ResultSet. Causa " + e.getMessage());
 		}
 		return novoServico;
 
@@ -98,14 +107,16 @@ public class ServicoDAO implements BaseDAO {
 
 	public String excluir(Servico servicoDigitado) {
 		Connection conn = Banco.getConnection();
-		String sql = "DELETE * FROM SERVICO WHERE SERVICO= "+ servicoDigitado;
+		String sql = "DELETE * FROM SERVICO WHERE SERVICO= "+ "'"+ servicoDigitado +"'";
 		Statement stmt = Banco.getStatement(conn);
 		
 		try {
 		stmt.execute(sql);
 		ResultSet rs = stmt.getGeneratedKeys();
+		
+		
 		}catch (SQLException e) {
-			System.out.println("nao foi possivel salvar Servico");
+			System.out.println("Não foi possivel Excluir Servico");
 			System.out.println("Erro" + e);
 		}finally {
 			Banco.closePreparedStatement(stmt);

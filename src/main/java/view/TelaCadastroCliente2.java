@@ -37,6 +37,7 @@ public class TelaCadastroCliente2 extends JDialog {
 	private Component separator;
 	private JTextPane txtPaneObs;
 	private JFormattedTextField fmtTelefone;
+	private JFormattedTextField fmtCpf;
 
 	/**
 	 * Launch the application.
@@ -63,29 +64,29 @@ public class TelaCadastroCliente2 extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		JLabel lblNome = new JLabel("Nome:");
-		lblNome.setBounds(40, 62, 46, 14);
+		lblNome.setBounds(35, 45, 46, 14);
 		contentPanel.add(lblNome);
 
 		JLabel lblSobreNome = new JLabel("SobreNome:");
-		lblSobreNome.setBounds(8, 108, 105, 14);
+		lblSobreNome.setBounds(6, 76, 75, 14);
 		contentPanel.add(lblSobreNome);
 
 		JLabel lblbTelefone = new JLabel("Telefone:");
-		lblbTelefone.setBounds(26, 156, 75, 14);
+		lblbTelefone.setBounds(18, 107, 75, 14);
 		contentPanel.add(lblbTelefone);
 
 		JLabel lblObservacao = new JLabel("Observação:");
-		lblObservacao.setBounds(6, 199, 98, 14);
+		lblObservacao.setBounds(3, 199, 98, 14);
 		contentPanel.add(lblObservacao);
 
 		txtNome2 = new JTextField();
-		txtNome2.setBounds(83, 59, 158, 20);
+		txtNome2.setBounds(83, 42, 158, 20);
 		contentPanel.add(txtNome2);
 		txtNome2.setColumns(10);
 
 		txtSobreNome2 = new JTextField();
 		txtSobreNome2.setColumns(10);
-		txtSobreNome2.setBounds(83, 105, 158, 20);
+		txtSobreNome2.setBounds(83, 73, 158, 20);
 		contentPanel.add(txtSobreNome2);
 
 		txtPaneObs = new JTextPane();
@@ -113,14 +114,20 @@ public class TelaCadastroCliente2 extends JDialog {
 				String telefoneCliente = fmtTelefone.getText();
 				telefoneCliente.replaceAll("()", "");
 				telefoneCliente.replaceAll("-", "");
+				String cpfCliente = fmtCpf.getText();
+				cpfCliente.replaceAll(".", "");
+				cpfCliente.replaceAll("-", "");
 				String observacaoCliente = ((JTextComponent) txtPaneObs).getText();
 				observacaoCliente.toUpperCase();
 				String mensagem = "";
-				mensagem += controladora.validar(nomeCliente, sobreNomeCliente, telefoneCliente, observacaoCliente);
+				String msg = "";
+				mensagem += controladora.validar(nomeCliente, sobreNomeCliente, telefoneCliente, cpfCliente,
+						observacaoCliente);
 				if (mensagem.isEmpty()) {
-					Cliente cliente = new Cliente(nomeCliente, sobreNomeCliente, telefoneCliente, observacaoCliente);
-					cliente = controladora.salvar(cliente);
-					JOptionPane.showMessageDialog(null, "salvo com sucesso!");
+					Cliente cliente = new Cliente(nomeCliente, sobreNomeCliente, telefoneCliente, cpfCliente,
+							observacaoCliente);
+					msg = controladora.salvar(cliente);
+					JOptionPane.showMessageDialog(null, msg);
 					FrmPrimeiraTela tela = new FrmPrimeiraTela();
 					tela.consultarProfissional();
 				} else {
@@ -175,11 +182,20 @@ public class TelaCadastroCliente2 extends JDialog {
 
 		try {
 			MaskFormatter mascaraTelefone = new MaskFormatter("(##)#####-####");
+			MaskFormatter mascaraCpf = new MaskFormatter("###.###.###-##");
 			fmtTelefone = new JFormattedTextField(mascaraTelefone);
-			fmtTelefone.setBounds(83, 150, 158, 20);
+			fmtTelefone.setBounds(83, 104, 158, 20);
 			contentPanel.add(fmtTelefone);
+
+			fmtCpf = new JFormattedTextField(mascaraCpf);
+			fmtCpf.setBounds(83, 135, 158, 20);
+			contentPanel.add(fmtCpf);
+
+			JLabel lblCpf = new JLabel("Cpf:");
+			lblCpf.setBounds(42, 138, 39, 14);
+			contentPanel.add(lblCpf);
 		} catch (ParseException e) {
-		System.out.println("Erro ao construir formatador " + e);
+			System.out.println("Erro ao construir formatador " + e);
 		}
 
 	}

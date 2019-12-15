@@ -3,12 +3,15 @@ package controller;
 import java.util.ArrayList;
 
 import model.bo.ClienteBO;
+import model.dao.ClienteDAO;
 import model.vo.Cliente;
 
 public class ControladoraCliente {
 	ClienteBO bo = new ClienteBO();
-	public String validar(String nomeCliente,String sobreNomeCliente, String telefoneCliente, String observacao) {
+	ClienteDAO dao = new ClienteDAO();
+	public String validar(String nomeCliente,String sobreNomeCliente, String telefoneCliente, String cpfCliente ,String observacao) {
 		String mensagem ="";
+		
 
 
 		if((nomeCliente == null) || (nomeCliente.trim().length() < 3)) {
@@ -23,12 +26,18 @@ public class ControladoraCliente {
 			mensagem +="Telefone deve ter no minímo 8 digitos ";
 		}
 
+		if((cpfCliente == null) || (cpfCliente.trim().length() < 11)){
+			mensagem +="Cliente deve ter no minímo 11 digitos";
+			
+		}
+	
 
 		return mensagem;
 	}
 
-	public Cliente salvar(Cliente cliente) {
-
+	public String salvar(Cliente cliente) {
+		
+		
 		return bo.salvar(cliente);
 	}
 
@@ -37,10 +46,11 @@ public class ControladoraCliente {
 		return bo.consultarTodos();
 	}
 
-	public boolean excluirCliente(int linhaSelecionada) {
 	
-	
-		return bo.excluirCliente(linhaSelecionada);	
+	public String excluir(Cliente clienteSelecionado) {
+		
+		return bo.excluir(clienteSelecionado);
+		 
 	}
 
 

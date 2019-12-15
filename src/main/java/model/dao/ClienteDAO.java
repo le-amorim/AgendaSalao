@@ -6,22 +6,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
 import model.vo.Cliente;
 
-@SuppressWarnings("rawtypes")
-public class ClienteDAO implements BaseDAO {
+public class ClienteDAO {
 
-	public Cliente salvar(Cliente cliente) {
+	public int salvar(Cliente cliente) {
 		Connection conn = Banco.getConnection();
-		String sql = "INSERT INTO CLIENTE (NOME, SOBRENOME, TELEFONE, OBSERVACAO) VALUES (?,?,?,?)";
+		String sql = "INSERT INTO CLIENTE (NOME, SOBRENOME, TELEFONE,CPF ,OBSERVACAO) VALUES (?,?,?,?,?)";
 		PreparedStatement Prepstmt = Banco.getPreparedStatement(conn, sql, PreparedStatement.RETURN_GENERATED_KEYS);
-
+		int resultado = 0;
 		try {
 			Prepstmt.setString(1, cliente.getNome());
 			Prepstmt.setString(2, cliente.getSobreNome());
 			Prepstmt.setString(3, cliente.getTelefone());
-			Prepstmt.setString(4, cliente.getObservacao());
+			Prepstmt.setString(4, cliente.getCpf());
+			Prepstmt.setString(5, cliente.getObservacao());
 			Prepstmt.execute();
 			ResultSet rs = Prepstmt.getGeneratedKeys();
 
@@ -38,14 +37,14 @@ public class ClienteDAO implements BaseDAO {
 
 		}
 
-		return cliente;
+		return resultado;
 	}
 
 	public ArrayList<Cliente> consultarTodos() {
 		Connection conn = Banco.getConnection();
 		Statement stmt = Banco.getStatement(conn);
 		ResultSet result = null;
-		String sql = "SELECT * FROM CLIENTE";
+		String sql = "SELECT * FROM CLIENTE ORDER BY NOME ASC";
 		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 
 		try {
@@ -77,48 +76,79 @@ public class ClienteDAO implements BaseDAO {
 			novoCliente.setSobreNome(result.getString("SOBRENOME"));
 			novoCliente.setTelefone(result.getString("TELEFONE"));
 			novoCliente.setObservacao(result.getString("OBSERVACAO"));
+			novoCliente.setCpf(result.getString("CPF"));
 		} catch (SQLException e) {
-			System.out.println("Erro ao construir Apartir Do ResultSet");
+			System.out.println("Erro ao construir a partir Do ResultSet. Causa: " + e.getMessage());
 		}
 		return novoCliente;
 	}
 
-	public boolean excluirCliente(int linhaSelecionada) {
-		Connection conn = Banco.getConnection();
-		Statement stmt = Banco.getStatement(conn);
-		int resultado = 0;
-
-		String query = "DELETE FROM Cliente WHERE linhaSelecionada = " + linhaSelecionada;
+	public Object consultarPorId(int idCliente) {
+		Connection conexao = Banco.getConnection();
+		String sql = " SELECT * FROM CLIENTE WHERE IDCLIENTE=?";
+		ResultSet resultadoDaConsulta = null;
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+		Cliente clienteSelecionado = null;
 		try {
-			resultado = stmt.executeUpdate(query);
+			stmt.setInt(1, idCliente);
+			resultadoDaConsulta = stmt.executeQuery();
+
+			if (resultadoDaConsulta.next()) {
+				clienteSelecionado = construirDoResultSet(resultadoDaConsulta);
+			}
 		} catch (SQLException e) {
-			System.out.println("Erro ao executar a Query de Exclusão do Usuário.");
+			System.out.println("Erro ao consultar profissional por id: " + idCliente);
 			System.out.println("Erro: " + e.getMessage());
 		} finally {
-			Banco.closeStatement(stmt);
-			Banco.closeConnection(conn);
+			Banco.closeResultSet(resultadoDaConsulta);
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
 		}
 
-		return (resultado > 0);
-	}
+		return clienteSelecionado;
 
-	public Object consultarPorId(int id) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public boolean excluir(int id) {
-		// TODO Auto-generated method stub
-		return false;
+		Connection conexao = Banco.getConnection();
+		Statement statement = Banco.getStatement(conexao);
+		String sql = " DELETE FROM CLIENTE WHERE IDCLIENTE = " + id;
+
+		int quantidadeRegistrosExcluidos = 0;
+		try {
+			quantidadeRegistrosExcluidos = statement.executeUpdate(sql);
+		} catch (SQLException e) {
+			System.out.println("Erro ao excluir Cliente. ");
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(statement);
+			Banco.closeConnection(conexao);
+		}
+
+		return quantidadeRegistrosExcluidos > 0;
 	}
 
-	public boolean alterar(Object entidade) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public boolean consultarCpfCliente(String cpfdigitado) {
+		Connection conn = Banco.getConnection();
+		Statement stmt = Banco.getStatement(conn);
+		ResultSet result = null;
+		String sql = "SELECT CPF FROM CLIENTE WHERE CPF = " + "'" + cpfdigitado + "'";
+		try {
+			result = stmt.executeQuery(sql);
+			if (result.next()) {
+				return true;
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao verificar Cpf");
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closeResultSet(result);
+			Banco.closeStatement(stmt);
+			Banco.closeConnection(conn);
 
-	public Object salvar(Object novaEntidade) {
-		// TODO Auto-generated method stub
-		return null;
+		}
+		System.out.println(sql);
+	
+		return false;
 	}
 }

@@ -6,11 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
 import model.vo.Profissional;
 
-@SuppressWarnings("rawtypes")
-public class ProfissionalDAO implements BaseDAO {
-	
+public class ProfissionalDAO {
+
 	public Profissional salvar(Profissional profissional) {
 		Connection conn = Banco.getConnection();
 		String sql = "INSERT INTO PROFISSIONAL (NOME, ESPECIALIDADE) VALUES (?,?)";
@@ -29,7 +29,7 @@ public class ProfissionalDAO implements BaseDAO {
 			}
 		} catch (SQLException e) {
 			System.out.println("nao foi possivel salvar Profissional");
-			System.out.println("Erro" + e);
+			System.out.println("Erro" + e.getMessage());
 		} finally {
 			Banco.closePreparedStatement(stmt);
 			Banco.closeConnection(conn);
@@ -39,19 +39,30 @@ public class ProfissionalDAO implements BaseDAO {
 		return profissional;
 	}
 
-	public boolean excluir(int id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public Profissional consultarPorId(int idProfissional) { // IMPLEMENTAR ESSE METODO HOJE!!
+		Connection conexao = Banco.getConnection();
+		String sql = " SELECT * FROM PROFISSIONAL WHERE IDPROFISSIONAL=?";
+		ResultSet resultadoDaConsulta = null;
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+		Profissional profissionalSelecionado = null;
+		try {
+			stmt.setInt(1, idProfissional);
+			resultadoDaConsulta = stmt.executeQuery();
 
-	public boolean alterar(Object entidade) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+			if (resultadoDaConsulta.next()) {
+				profissionalSelecionado = construirDoResultSet(resultadoDaConsulta);
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar profissional por id: " + idProfissional);
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closeResultSet(resultadoDaConsulta);
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
+		}
 
-	public Profissional consultarPorId(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return profissionalSelecionado;
+
 	}
 
 	public ArrayList<Profissional> consultarTodos() {
@@ -65,7 +76,7 @@ public class ProfissionalDAO implements BaseDAO {
 			result = stmt.executeQuery(sql);
 
 			while (result.next()) {
-	Profissional profissional = construirDoResultSet(result);
+				Profissional profissional = construirDoResultSet(result);
 				profissionais.add(profissional);
 			}
 
@@ -77,7 +88,7 @@ public class ProfissionalDAO implements BaseDAO {
 			Banco.closeConnection(conn);
 
 		}
-		
+
 		return profissionais;
 	}
 
@@ -86,16 +97,10 @@ public class ProfissionalDAO implements BaseDAO {
 		try {
 			novoProfissional.setIdProfissional(result.getInt("IDPROFISSIONAL"));
 			novoProfissional.setNome(result.getString("NOME"));
-			novoProfissional.setEspecialidade(result.getString("ESPECIALIDADE"));
 		} catch (SQLException e) {
-			System.out.println("Erro ao construir Apartir Do ResultSet");
+			System.out.println("Erro ao construir a partir Do ResultSet. Causa " + e.getMessage());
 		}
 		return novoProfissional;
-	}
-
-	public Object salvar(Object novaEntidade) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

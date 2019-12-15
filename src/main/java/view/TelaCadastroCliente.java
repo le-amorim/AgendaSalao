@@ -25,6 +25,10 @@ import javax.swing.text.MaskFormatter;
 import controller.ControladoraCliente;
 import model.vo.Cliente;
 import javax.swing.ImageIcon;
+import javax.swing.JScrollPane;
+import javax.swing.border.LineBorder;
+import java.awt.SystemColor;
+import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
 public class TelaCadastroCliente extends JPanel {
@@ -37,41 +41,67 @@ public class TelaCadastroCliente extends JPanel {
 	private JTextField txtSobreNome;
 	private JFormattedTextField fmtTelefone;
 	protected int linhaSelecionada;
+	private JFormattedTextField fmtCpf;
 
 	public TelaCadastroCliente() {
-		setBackground(Color.LIGHT_GRAY);
-		setBounds(0, 0, 481, 616);
+		setBackground(SystemColor.activeCaption);
+		setBounds(0, 0, 679, 630);
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
-		this.setLayout(null);
-		
-					JButton btnExcluirCliente = new JButton("Excluir Cliente");
-					btnExcluirCliente.addActionListener(new ActionListener() {
+		JButton btnExcluirCliente = new JButton("Excluir Cliente");
+		btnExcluirCliente.setBounds(328, 585, 122, 23);
+		btnExcluirCliente.addActionListener(new ActionListener() {
 
-						public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 
-							DefaultTableModel model = (DefaultTableModel) tblConsultaCliente.getModel();
-							if (tblConsultaCliente.getSelectedRow() >= 0) {
-								model.removeRow(tblConsultaCliente.getSelectedRow());
-								linhaSelecionada = tblConsultaCliente.getSelectedRow();
-								tblConsultaCliente.getValueAt(linhaSelecionada, 0);
-								tblConsultaCliente.setModel(model);
-								excluirClienteSelecionado();
-							} else {
-								JOptionPane.showMessageDialog(null, "Favor selecionar uma linha");
-							}
+				DefaultTableModel model = (DefaultTableModel) tblConsultaCliente.getModel();
+				int valorBotao = JOptionPane.YES_NO_OPTION;
+				valorBotao = JOptionPane.showConfirmDialog(null, "deseja realmente excluir este cliente?",
+						"CONFIRMAÇÃO", valorBotao);
+				if (valorBotao == JOptionPane.YES_OPTION) {
 
-						}
-					});
-					btnExcluirCliente.setBounds(328, 582, 122, 23);
-					add(btnExcluirCliente);
+					if (tblConsultaCliente.getSelectedRow() >= 0) {
+						linhaSelecionada = tblConsultaCliente.getSelectedRow();
+						Cliente clienteSelecionado = clientes.get(linhaSelecionada - 1);
+						model.removeRow(tblConsultaCliente.getSelectedRow());
+						ControladoraCliente controladoraCliente = new ControladoraCliente();
+						String mensagem = controladoraCliente.excluir(clienteSelecionado);
+						JOptionPane.showMessageDialog(null, mensagem);
+
+					} else {
+
+						JOptionPane.showMessageDialog(null, "Favor selecionar uma linha");
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Cancelado");
+				}
+
+			}
+		});
+		setLayout(null);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 344, 522, 230);
+		add(scrollPane);
+
+		JPanel panel = new JPanel();
+		scrollPane.setViewportView(panel);
+
+		tblConsultaCliente = new JTable();
+		panel.add(tblConsultaCliente);
+		tblConsultaCliente.setBorder(new LineBorder(new Color(0, 0, 0)));
+
+		JLabel lblCpf = new JLabel("Cpf: ");
+		lblCpf.setBounds(70, 115, 46, 14);
+		add(lblCpf);
+		add(btnExcluirCliente);
 
 		JLabel lblCadastroDeCliente = new JLabel("Cadastro De Cliente");
+		lblCadastroDeCliente.setBounds(149, 11, 196, 14);
 		lblCadastroDeCliente.setFont(new Font("Segoe Script", Font.BOLD, 13));
-		lblCadastroDeCliente.setBounds(110, 11, 196, 14);
 		this.add(lblCadastroDeCliente);
 
 		JLabel lblNome = new JLabel("Nome");
-		lblNome.setBounds(54, 54, 46, 14);
+		lblNome.setBounds(60, 54, 46, 14);
 		this.add(lblNome);
 
 		txtNome = new JTextField();
@@ -80,10 +110,11 @@ public class TelaCadastroCliente extends JPanel {
 		txtNome.setColumns(10);
 
 		JLabel lblTelefone = new JLabel("Telefone");
-		lblTelefone.setBounds(34, 115, 46, 17);
+		lblTelefone.setBounds(50, 151, 66, 17);
 		this.add(lblTelefone);
 
 		JButton btnSalvar = new JButton("Salvar");
+		btnSalvar.setBounds(206, 257, 83, 39);
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ControladoraCliente controladora = new ControladoraCliente();
@@ -91,15 +122,21 @@ public class TelaCadastroCliente extends JPanel {
 				String nomeCliente = txtNome.getText();
 				String sobreNomeCliente = txtSobreNome.getText();
 				String telefoneCliente = fmtTelefone.getText();
-				telefoneCliente.replaceAll("()" ,  "");
-				telefoneCliente.replaceAll("-"  ,  "");
+				telefoneCliente.replaceAll("()", "");
+				telefoneCliente.replaceAll("-", "");
 				String observacaoCliente = ((JTextComponent) txtObservacao).getText();
+				String cpfCliente = fmtCpf.getText();
+				cpfCliente.replaceAll(".", "");
+				cpfCliente.replaceAll("-", "");
 				String mensagem = "";
-				mensagem += controladora.validar(nomeCliente, sobreNomeCliente, telefoneCliente, observacaoCliente);
+				String msg = "";
+				mensagem += controladora.validar(nomeCliente, sobreNomeCliente, telefoneCliente, cpfCliente,
+						observacaoCliente);
 				if (mensagem.isEmpty()) {
-					Cliente cliente = new Cliente(nomeCliente, sobreNomeCliente, telefoneCliente, observacaoCliente);
-					cliente = controladora.salvar(cliente);
-					JOptionPane.showMessageDialog(null, "salvo com sucesso!");
+					Cliente cliente = new Cliente(nomeCliente, sobreNomeCliente, telefoneCliente, cpfCliente,
+							observacaoCliente);
+					msg = controladora.salvar(cliente);
+					JOptionPane.showMessageDialog(null, msg);
 					FrmPrimeiraTela tela = new FrmPrimeiraTela();
 					tela.consultarProfissional();
 					atualizarTabelaClientes();
@@ -109,71 +146,87 @@ public class TelaCadastroCliente extends JPanel {
 
 			}
 		});
-		btnSalvar.setBounds(206, 234, 83, 39);
 		this.add(btnSalvar);
 
 		btnLimpar = new JButton("Limpar");
+		btnLimpar.setBounds(110, 257, 86, 39);
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				txtNome.setText("");
 				txtSobreNome.setText("");
 				fmtTelefone.setText("");
+				fmtCpf.setText("");
 				((JTextComponent) txtObservacao).setText("");
 			}
 		});
-		btnLimpar.setBounds(110, 234, 86, 39);
 		this.add(btnLimpar);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(0, 609, 565, 10);
+		add(separator);
+		
+		JSeparator separator_2 = new JSeparator();
+		separator_2.setOrientation(SwingConstants.VERTICAL);
+		separator_2.setBounds(564, 309, 20, 299);
+		add(separator_2);
 
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(0, 284, 450, 10);
+		separator_1.setBounds(0, 307, 565, 10);
 		this.add(separator_1);
 
 		txtObservacao = new JTextArea();
-		txtObservacao.setBounds(110, 144, 179, 66);
+		txtObservacao.setBounds(110, 180, 179, 66);
 		this.add(txtObservacao);
 
 		JLabel lblObservacao = new JLabel("Observação:");
-		lblObservacao.setBounds(27, 160, 62, 14);
+		lblObservacao.setBounds(34, 204, 77, 14);
 		this.add(lblObservacao);
 
 		JLabel lblConsultaDeCliente = new JLabel("Consulta de Cliente");
+		lblConsultaDeCliente.setBounds(149, 317, 196, 14);
 		lblConsultaDeCliente.setForeground(Color.BLACK);
 		lblConsultaDeCliente.setFont(new Font("Segoe Script", Font.BOLD | Font.ITALIC, 13));
-		lblConsultaDeCliente.setBounds(150, 295, 196, 14);
 		this.add(lblConsultaDeCliente);
-
-		tblConsultaCliente = new JTable();
-		tblConsultaCliente.setBounds(10, 320, 461, 246);
 		construirTabelaClientes();
-		this.add(tblConsultaCliente);
 
 		JLabel lblSobreNome = new JLabel("SobreNome");
-		lblSobreNome.setBounds(27, 79, 77, 14);
+		lblSobreNome.setBounds(35, 79, 77, 14);
 		add(lblSobreNome);
 
 		txtSobreNome = new JTextField();
-		txtSobreNome.setColumns(10);
 		txtSobreNome.setBounds(110, 82, 179, 20);
+		txtSobreNome.setColumns(10);
 		add(txtSobreNome);
-
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon(TelaCadastroCliente.class.getResource("/icones/deboche.gif")));
-		lblNewLabel.setBounds(0, 0, larguraDaTela, alturaDaTela);
-		add(lblNewLabel);
 
 		try {
 			MaskFormatter mascaraTelefone = new MaskFormatter("(##)#####-####");
+			MaskFormatter mascaraCpf = new MaskFormatter("###.###.###-##");
 			fmtTelefone = new JFormattedTextField(mascaraTelefone);
-			fmtTelefone.setBounds(110, 113, 179, 20);
+			fmtTelefone.setBounds(110, 149, 179, 20);
 			add(fmtTelefone);
+
+			fmtCpf = new JFormattedTextField(mascaraCpf);
+			fmtCpf.setBounds(110, 113, 179, 20);
+			add(fmtCpf);
+			
+					
+			
+
 		} catch (ParseException e) {
 		}
-
-	}
-
-	protected void excluirClienteSelecionado() {
-		ControladoraCliente controller = new ControladoraCliente();
-		controller.excluirCliente(linhaSelecionada);
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setBounds(0, 0, larguraDaTela, alturaDaTela);
+		lblNewLabel.setIcon(new ImageIcon(TelaCadastroCliente.class.getResource("/icones/deboche.gif")));
+		add(lblNewLabel);
+		
+		JSeparator separator_3 = new JSeparator();
+		separator_3.setOrientation(SwingConstants.VERTICAL);
+		separator_3.setBounds(0, 307, 20, 299);
+		add(separator_3);
+		
+		Dimension dimensoesTela = Toolkit.getDefaultToolkit().getScreenSize();
+		int larguraDaTela = (int) dimensoesTela.getWidth();
+		int alturaDaTela = (int) (dimensoesTela.getHeight());
 
 	}
 
@@ -183,12 +236,12 @@ public class TelaCadastroCliente extends JPanel {
 		construirTabelaClientes();
 		DefaultTableModel model = (DefaultTableModel) tblConsultaCliente.getModel();
 		for (Cliente cliente : clientes) {
-			String[] novaLinha = new String[4];
+			String[] novaLinha = new String[5];
 			novaLinha[0] = cliente.getNome().toUpperCase();
 			novaLinha[1] = cliente.getSobreNome().toUpperCase();
 			novaLinha[2] = cliente.getTelefone().toUpperCase();
-			novaLinha[3] = cliente.getObservacao().toUpperCase();
-
+			novaLinha[3] = cliente.getCpf().toUpperCase();
+			novaLinha[4] = cliente.getObservacao().toUpperCase();
 			// Adiciona a nova linha na tabela
 			model.addRow(novaLinha);
 
@@ -201,9 +254,14 @@ public class TelaCadastroCliente extends JPanel {
 
 	private void construirTabelaClientes() {
 
-		tblConsultaCliente
-				.setModel(new DefaultTableModel(new String[][] { { "Nome", "Sobrenome", "telefone", "Observação " }, },
-						new String[] { "Nome", "Sobrenome", "telefone", "Observação " }));
+		tblConsultaCliente.setModel(
+				new DefaultTableModel(new Object[][] { { "Nome", "Sobrenome", "telefone", "CPF ", "Observacao" }, },
+						new String[] { "Nome", "Sobrenome", "telefone", "CPF ", "Observacao" }));
+		tblConsultaCliente.getColumnModel().getColumn(0).setPreferredWidth(73);
+		tblConsultaCliente.getColumnModel().getColumn(1).setPreferredWidth(101);
+		tblConsultaCliente.getColumnModel().getColumn(2).setPreferredWidth(92);
+		tblConsultaCliente.getColumnModel().getColumn(3).setPreferredWidth(102);
+		tblConsultaCliente.getColumnModel().getColumn(4).setPreferredWidth(90);
 
 	}
 }

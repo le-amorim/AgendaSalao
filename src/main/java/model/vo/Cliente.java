@@ -6,14 +6,18 @@ public class Cliente {
 	private String telefone;
 	private String observacao;
 	private String sobreNome;
+	private String cpf;
+	
 
-	public Cliente(int idCliente, String nome, String telefone, String observacao, String sobreNome) {
+
+	public Cliente(int idCliente, String nome, String telefone, String observacao, String sobreNome, String cpf) {
 		super();
 		this.idCliente = idCliente;
 		this.nome = nome;
 		this.telefone = telefone;
 		this.observacao = observacao;
 		this.sobreNome = sobreNome;
+		this.cpf = cpf;
 	}
 
 	public Cliente() {
@@ -21,11 +25,12 @@ public class Cliente {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Cliente(String nomeCliente,String sobreNomeCliente, String telefoneCliente, String observacaoCliente) {
+	public Cliente(String nomeCliente,String sobreNomeCliente, String telefoneCliente,String cpfCliente ,String observacaoCliente) {
 		this.nome = nomeCliente;
 		this.telefone = telefoneCliente;
 		this.observacao = observacaoCliente;
 		this.sobreNome = sobreNomeCliente;
+		this.cpf = cpfCliente;
 	}
 
 	
@@ -68,12 +73,23 @@ public class Cliente {
 
 	public void setSobreNome(String sobreNome) {
 		this.sobreNome = sobreNome;
+	
 	}
 
+	public String getCpf() {
+		return cpf;
+	}
+	
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+	
+	
 	@Override
 	public String toString() {
 		return " " + nome + " " + sobreNome + "";
 	}
+
 
 	
 }

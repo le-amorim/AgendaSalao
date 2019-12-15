@@ -21,7 +21,7 @@ public class TelaCadastroFuncionario extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtNome;
 	private JTextField txtEspecialidade;
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -74,17 +74,19 @@ public class TelaCadastroFuncionario extends JDialog {
 
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
+			
+
+			 
+
 			public void actionPerformed(ActionEvent arg0) {
 				ControladoraFuncionario controladora = new ControladoraFuncionario();
 				String nomeDigitado = txtNome.getText();
 				String EspecialidadeDigitado = txtEspecialidade.getText();
-
 				String mensagem = controladora.validarCamposDigitado(nomeDigitado, EspecialidadeDigitado);
 				if (mensagem.isEmpty()) {
 					Profissional profissional = new Profissional(nomeDigitado, EspecialidadeDigitado);
 					profissional = controladora.salvar(profissional);
 					JOptionPane.showMessageDialog(null, "salvo com sucesso!");
-
 				} else {
 					JOptionPane.showMessageDialog(null, mensagem);
 				}
@@ -102,4 +104,5 @@ public class TelaCadastroFuncionario extends JDialog {
 		btnLimpar.setBounds(105, 210, 89, 23);
 		contentPanel.add(btnLimpar);
 	}
+
 }

@@ -18,6 +18,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import controller.ControladoraFuncionario;
+import model.vo.Agendamento;
 import model.vo.Profissional;
 import javax.swing.border.BevelBorder;
 import javax.swing.JButton;
@@ -32,6 +33,7 @@ public class FrmPrimeiraTela extends JFrame {
 	protected JComboBox cbProfissional;
 	protected TelaCadastroCliente telaCadastroCliente;
 	private JLabel lblImg;
+	private ArrayList<Agendamento> agendamentosDehoje;
 
 	/**
 	 * Launch the application.
@@ -55,7 +57,9 @@ public class FrmPrimeiraTela extends JFrame {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public FrmPrimeiraTela() {
-		
+		setTitle("Salão de Beleza Studio Du'artes                                                                                                                                                                                                               Versão 1.0.0");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(FrmPrimeiraTela.class.getResource("/icones/foto.png")));
+
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 699, 549);
@@ -87,9 +91,9 @@ public class FrmPrimeiraTela extends JFrame {
 		JMenuItem mntmNewMenuItem = new JMenuItem("Cliente");
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(telaCadastroCliente == null) {
+				if (telaCadastroCliente == null) {
 					telaCadastroCliente = new TelaCadastroCliente();
-					telaCadastroCliente.setBounds(0,0, painelDireito.getWidth(), painelDireito.getHeight());
+					telaCadastroCliente.setBounds(0, 0, painelDireito.getWidth(), painelDireito.getHeight());
 					painelDireito.add(telaCadastroCliente);
 					revalidate();
 					repaint();
@@ -115,29 +119,29 @@ public class FrmPrimeiraTela extends JFrame {
 
 		JMenuItem mntmMensal = new JMenuItem("Mensal");
 		mnReltorio.add(mntmMensal);
-		
+
 		Dimension dimensoesTela = Toolkit.getDefaultToolkit().getScreenSize();
 		int larguraDaTela = (int) dimensoesTela.getWidth();
 		int alturaDaTela = (int) (dimensoesTela.getHeight() - 50);
-		
+
 		painelEsquerdo = new JPanel();
-		painelEsquerdo.setBounds(0,0,200,alturaDaTela);
+		painelEsquerdo.setBounds(0, 0, 200, alturaDaTela);
 		painelEsquerdo.setBorder(new LineBorder(new Color(0, 0, 0)));
 		getContentPane().add(painelEsquerdo);
 		painelEsquerdo.setLayout(null);
-		
+
 		painelDireito = new JPanel();
 		painelDireito.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		painelDireito.setBounds(204, 0, larguraDaTela-200, alturaDaTela - 50);
+		painelDireito.setBounds(204, 0, larguraDaTela - 200, alturaDaTela - 50);
 		getContentPane().add(painelDireito);
 		painelDireito.setLayout(null);
-		
+
 		lblImg = new JLabel("New label");
 		lblImg.setIcon(new ImageIcon(FrmPrimeiraTela.class.getResource("/icones/deboche.gif")));
 		lblImg.setBounds(10, 11, larguraDaTela, alturaDaTela);
 		painelDireito.add(lblImg);
 
-		consultarProfissional();
+		profissionais = consultarProfissional();
 		cbProfissional = new JComboBox(profissionais.toArray());
 		cbProfissional.setSelectedIndex(-1);
 		cbProfissional.addActionListener(new ActionListener() {
@@ -145,8 +149,11 @@ public class FrmPrimeiraTela extends JFrame {
 				Profissional profissionalSelecionado = (Profissional) cbProfissional.getSelectedItem();
 				EstruturaAgenda estrutura = new EstruturaAgenda();
 				estrutura.setProfissionalSelecionado(profissionalSelecionado);
+				agendamentosDehoje = estrutura.consultarAgendamentosDoDia();
+				estrutura.preencherTabelaDoDia(agendamentosDehoje);
 				estrutura.setVisible(true);
-			
+				revalidate();
+				repaint();
 			}
 		});
 		cbProfissional.setBounds(56, 265, 118, 20);
@@ -172,17 +179,18 @@ public class FrmPrimeiraTela extends JFrame {
 		lblArtes.setFont(new Font("Segoe Script", Font.ITALIC, 18));
 		lblArtes.setBounds(40, 58, 78, 14);
 		painelEsquerdo.add(lblArtes);
-		
+
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon(FrmPrimeiraTela.class.getResource("/icones/foto.png")));
 		label.setBounds(0, 0, 219, 225);
 		painelEsquerdo.add(label);
-		
+
 		JButton btnPesquisar = new JButton("");
 		btnPesquisar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			TelaConsultaAgendamento tela = new TelaConsultaAgendamento();
-			tela.setVisible(true);
+				TelaConsultaAgendamento tela = new TelaConsultaAgendamento();
+				tela.setVisible(true);
+				
 			}
 		});
 		btnPesquisar.setBounds(20, 265, 26, 20);
@@ -190,7 +198,7 @@ public class FrmPrimeiraTela extends JFrame {
 		btnPesquisar.setIcon(new ImageIcon(FrmPrimeiraTela.class.getResource("/icones/lupa.png")));
 	}
 
-		 ArrayList<Profissional> consultarProfissional() {
+	ArrayList<Profissional> consultarProfissional() {
 		ControladoraFuncionario controladora = new ControladoraFuncionario();
 		return profissionais = controladora.consultarTodos();
 	}

@@ -2,24 +2,27 @@ package model.vo.seletor;
 
 import java.time.LocalDate;
 
+import model.vo.Profissional;
+import model.vo.Servico;
+
 public class AgendamentoSeletor {
 
-	private int Idagendamento;
-	private String nomeProfissional;
-	private String servico;
+	private int idAgendamento;
+	private Profissional ProfissionalSeletor;
+	private Servico servico;
 	private LocalDate dataInicio;
 	private LocalDate dataFim;
 	private int limite;
 	private int pagina;
 
 	public boolean temFiltro() {
-		if (this.Idagendamento > 0) {
+		if (this.idAgendamento > 0) {
 			return true;
 		}
-		if ((this.nomeProfissional != null) && (this.nomeProfissional.trim().length() > 0)) {
+		if ((this.ProfissionalSeletor != null) && (this.ProfissionalSeletor.getNome().trim().length() > 0)) {
 			return true;
 		}
-		if ((this.servico != null) && (this.servico.trim().length() > 0)) {
+		if ((this.servico != null) && (this.servico.getServico().trim().length() > 0)) {
 			return true;
 		}
 
@@ -46,26 +49,19 @@ public class AgendamentoSeletor {
 	}
 
 	public int getIdagendamento() {
-		return Idagendamento;
+		return idAgendamento;
 	}
 
 	public void setIdagendamento(int idagendamento) {
-		Idagendamento = idagendamento;
+		idAgendamento = idagendamento;
 	}
 
-	public String getNomeProfissional() {
-		return nomeProfissional;
-	}
-
-	public void setNomeProfissional(String nomeProfissional) {
-		this.nomeProfissional = nomeProfissional;
-	}
-
-	public String getServico() {
+	
+	public Servico getServico() {
 		return servico;
 	}
 
-	public void setServico(String servico) {
+	public void setServico(Servico servico) {
 		this.servico = servico;
 	}
 
@@ -99,6 +95,14 @@ public class AgendamentoSeletor {
 
 	public void setPagina(int pagina) {
 		this.pagina = pagina;
+	}
+
+	public Profissional getProfissionalSeletor() {
+		return ProfissionalSeletor;
+	}
+
+	public void setProfissionalSeletor(Profissional profissionalSeletor) {
+		ProfissionalSeletor = profissionalSeletor;
 	}
 
 }

@@ -29,4 +29,17 @@ public class ControladoraFuncionario {
 		return bo.consultarTodos();
 	}
 
+	public ArrayList<Profissional> atualizarCombo(ArrayList<Profissional> profissionais) {
+			
+		if(profissionais.isEmpty()) {
+			System.out.println("deu ruim");
+			
+		}else {
+			
+		System.out.println("deu bom");
+		}
+		
+		return profissionais;
+	}
+
 }
