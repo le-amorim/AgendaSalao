@@ -36,7 +36,7 @@ public class ControladoraAgendamento {
 		return mensagem;
 	}
 
-	public Agendamento salvar(Agendamento agendamento) {
+	public String salvar(Agendamento agendamento) {
 
 		return bo.salvar(agendamento);
 	}

@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import model.vo.Agendamento;
@@ -19,12 +20,12 @@ import model.vo.seletor.AgendamentoSeletor;
 
 public class AgendamentoDAO  {
 
-	public Agendamento salvar(Agendamento agendamento) {
+	public int salvar(Agendamento agendamento) {
 		Connection conn = Banco.getConnection();
 		String sql = "INSERT INTO AGENDAMENTO (IDCLIENTE, IDPROFISSIONAL, IDSERVICO, DATACOMHORA, VALOR)"
 				+ " VALUES (?,?,?,?,?)";
 		PreparedStatement prepStmt = Banco.getPreparedStatement(conn, sql, PreparedStatement.RETURN_GENERATED_KEYS);
-
+		int resultado = 0;
 		try {
 			prepStmt.setInt(1, agendamento.getCliente().getIdCliente());
 			prepStmt.setInt(2, agendamento.getProfissional().getIdProfissional());
@@ -49,7 +50,7 @@ public class AgendamentoDAO  {
 
 		} 
 		
-		return agendamento;
+		return resultado;
 	}
 
 	public List<Agendamento> listarAgendamento(AgendamentoSeletor seletor) {
@@ -255,4 +256,27 @@ public class AgendamentoDAO  {
 		return agendamentosDodia;
 	}
 
+	public boolean verificarSePossuiHorarioMarcado(Profissional profissionalSelecionado, LocalDateTime dataComHoraSelecionado) {
+		Connection conn = Banco.getConnection();
+		Statement stmt = Banco.getStatement(conn);
+		ResultSet result = null;
+		String sql = "SELECT * FROM AGENDAMENTO WHERE IDPROFISSIONAL = " + profissionalSelecionado.getIdProfissional() +" AND DATACOMHORA = " +"'"+ dataComHoraSelecionado +"'"; 
+		try {
+			result = stmt.executeQuery(sql);
+			if (result.next()) {
+				return true;
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao verificar se Agendamento está disponivel");
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closeResultSet(result);
+			Banco.closeStatement(stmt);
+			Banco.closeConnection(conn);
+
+		}
+		System.out.println(sql);
+	
+		return false;
+	}
 }

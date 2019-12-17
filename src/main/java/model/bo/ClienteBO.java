@@ -24,6 +24,7 @@ public class ClienteBO {
 		} else {
 
 		}
+		System.out.println(resultado);
 		return msg;
 	}
 

@@ -66,6 +66,7 @@ public class TelaConsultaAgendamento extends JDialog {
 	 */
 
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public TelaConsultaAgendamento() {
 		this.setModal(true);
 		setBounds(100, 100, 662, 599);

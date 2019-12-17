@@ -13,13 +13,17 @@ import javax.swing.JTextField;
 import javax.swing.JSeparator;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
 
 @SuppressWarnings("serial")
 public class TelaCadastroServico extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtServico;
+	private JComboBox<Servico> cbServico;
+	private ArrayList<Servico> servicos;
 
 	/**
 	 * Launch the application.
@@ -46,11 +50,11 @@ public class TelaCadastroServico extends JDialog {
 		contentPanel.setLayout(null);
 		
 		JLabel lblServico = new JLabel("Servico");
-		lblServico.setBounds(64, 117, 46, 14);
+		lblServico.setBounds(72, 88, 46, 14);
 		contentPanel.add(lblServico);
 		
 		txtServico = new JTextField();
-		txtServico.setBounds(120, 114, 169, 23);
+		txtServico.setBounds(139, 84, 169, 23);
 		contentPanel.add(txtServico);
 		txtServico.setColumns(10);
 		
@@ -68,6 +72,7 @@ public class TelaCadastroServico extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				ControladoraServico controladora = new ControladoraServico();
 				String servicoDigitado = txtServico.getText();
+				servicoDigitado.toUpperCase();
 				String mensagem = "";
 				mensagem += controladora.validar(servicoDigitado);
 			
@@ -81,26 +86,38 @@ public class TelaCadastroServico extends JDialog {
 			
 			}
 		});
-		btnSalvar.setBounds(200, 177, 89, 40);
+		btnSalvar.setBounds(200, 210, 89, 40);
 		contentPanel.add(btnSalvar);
 		
 		JButton btnExcluir = new JButton("Excluir");
 		btnExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ControladoraServico controladora = new ControladoraServico();
-				String servicoParaExcluir = txtServico.getText();
-				String mensagem = "";
-				if (mensagem.isEmpty()) {
-					Servico servicoDigitado = new Servico(servicoParaExcluir);
-					servicoParaExcluir = controladora.excluir(servicoDigitado);
-					JOptionPane.showMessageDialog(null, "Excluido com sucesso!!");
-				} else {
-					JOptionPane.showMessageDialog(null, mensagem);
-				}
-			
+				int indiceServicoExcluir = cbServico.getSelectedIndex();
+				Servico servicoExcluir = servicos.get(indiceServicoExcluir);
+				   String mensagem = controladora.excluir(servicoExcluir);
+				   consultarServicos();
+					JOptionPane.showMessageDialog(null,mensagem);
+				
 			}
 		});
-		btnExcluir.setBounds(82, 177, 89, 40);
+		btnExcluir.setBounds(89, 210, 89, 40);
 		contentPanel.add(btnExcluir);
+			
+		consultarServicos();
+		 cbServico = new JComboBox(servicos.toArray());
+		 cbServico.setBounds(139, 145, 169, 23);
+		contentPanel.add(cbServico);
+		
+		JLabel lblSelecioneParaExcluir = new JLabel("Selecione para Excluir");
+		lblSelecioneParaExcluir.setBounds(10, 149, 119, 14);
+		contentPanel.add(lblSelecioneParaExcluir);
+	}
+
+	 ArrayList<Servico> consultarServicos() {
+		 ControladoraServico controller = new ControladoraServico();
+	
+		 
+		 return	servicos = controller.consultarTodos();
 	}
 }

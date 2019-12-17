@@ -17,9 +17,18 @@ ServicoDAO dao = new ServicoDAO();
 		return dao.salvar(servico);
 	}
 	
-	public String excluir(Servico servicoDigitado) {
-		// TODO Auto-generated method stub
-		return dao.excluir(servicoDigitado);
+	public String excluir(Servico servicoExcluir) {
+		String mensagem = "";
+		
+		if(dao.excluir(servicoExcluir.getIdservico())) {
+			mensagem += "Servico excluído com sucesso";
+		
+		}else {
+			mensagem += "Erro ao excluir empregado";
+		}
+			
+			
+		return mensagem;
 	}
 
 }

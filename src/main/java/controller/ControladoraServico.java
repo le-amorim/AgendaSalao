@@ -28,9 +28,9 @@ public class ControladoraServico {
 	}
 
 
-	public String excluir(Servico servicoDigitado) {
+	public String excluir(Servico servicoExcluir) {
 		// TODO Auto-generated method stub
-		return bo.excluir(servicoDigitado);
+		return bo.excluir(servicoExcluir);
 	}
 
 }

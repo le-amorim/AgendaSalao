@@ -11,38 +11,47 @@ import model.vo.seletor.AgendamentoSeletor;
 public class AgendamentoBO {
 	AgendamentoDAO dao = new AgendamentoDAO();
 
-	public Agendamento salvar(Agendamento agendamento) {
-		
-		return dao.salvar(agendamento);
+	public String salvar(Agendamento agendamento) {
+		String msg = "";
+		int resultado = 0;
+		if (dao.verificarSePossuiHorarioMarcado(agendamento.getProfissional(), agendamento.getDataComHora())) {
+			msg += ("Este Horário ja está marcado");
+		} else {
+			resultado = dao.salvar(agendamento);
+		}
+		if (resultado > -1) {
+			msg += ("Agendamento Realizado");
+		} else {
+
+		}
+		return msg;
 	}
 
 	public List<Agendamento> listarAgendamento(AgendamentoSeletor seletor) {
 		return dao.listarAgendamento(seletor);
 	}
 
-
 	public ArrayList<Agendamento> consultarPorDia(LocalDate dataEscolhida, Profissional profissionalSelecionado) {
-		
+
 		return dao.consultarPorDia(dataEscolhida, profissionalSelecionado);
-	
-	} 
+
+	}
 
 	public String excluir(Agendamento agendamentoSelecionado) {
 		String mensagem = "";
-		
-		if(dao.excluir(agendamentoSelecionado.getIdAgendamento())) {
+
+		if (dao.excluir(agendamentoSelecionado.getIdAgendamento())) {
 			mensagem += "Agendamento Excluido com sucesso!";
-		
-		}else {
+
+		} else {
 			mensagem += "Não foi possivel Excluir Agendamento";
 		}
-		
-		
+
 		return mensagem;
 	}
 
 	public ArrayList<Agendamento> consultarPeloDiaAtual(LocalDate dataHoje, Profissional profissionalSelecionado) {
-	
+
 		return dao.consultarPeloDiaAtual(dataHoje, profissionalSelecionado);
 	}
 

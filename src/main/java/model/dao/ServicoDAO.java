@@ -7,11 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-
 import model.vo.Servico;
 
 public class ServicoDAO {
-
 
 	public Servico consultarPorId(int idServico) {
 		Connection conexao = Banco.getConnection();
@@ -36,7 +34,7 @@ public class ServicoDAO {
 		}
 
 		return servicoSelecionado;
-		
+
 	}
 
 	public ArrayList<Servico> consultarTodos() {
@@ -105,24 +103,22 @@ public class ServicoDAO {
 		return servico;
 	}
 
-	public String excluir(Servico servicoDigitado) {
+	public boolean excluir(int Idservico) {
 		Connection conn = Banco.getConnection();
-		String sql = "DELETE * FROM SERVICO WHERE SERVICO= "+ "'"+ servicoDigitado +"'";
+		String sql = "DELETE FROM SERVICO WHERE IDSERVICO = " + Idservico;
 		Statement stmt = Banco.getStatement(conn);
-		
+		int quantidadeRegistrosExcluidos = 0;
+
 		try {
-		stmt.execute(sql);
-		ResultSet rs = stmt.getGeneratedKeys();
-		
-		
-		}catch (SQLException e) {
+			quantidadeRegistrosExcluidos = stmt.executeUpdate(sql);
+		} catch (SQLException e) {
 			System.out.println("Não foi possivel Excluir Servico");
 			System.out.println("Erro" + e);
-		}finally {
+		} finally {
 			Banco.closePreparedStatement(stmt);
 			Banco.closeConnection(conn);
 		}
-		
-		return null;
+
+		return quantidadeRegistrosExcluidos > 0;
 	}
 }

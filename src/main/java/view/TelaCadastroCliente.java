@@ -224,9 +224,7 @@ public class TelaCadastroCliente extends JPanel {
 		separator_3.setBounds(0, 307, 20, 299);
 		add(separator_3);
 		
-		Dimension dimensoesTela = Toolkit.getDefaultToolkit().getScreenSize();
-		int larguraDaTela = (int) dimensoesTela.getWidth();
-		int alturaDaTela = (int) (dimensoesTela.getHeight());
+		
 
 	}
 

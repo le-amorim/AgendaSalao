@@ -47,6 +47,7 @@ public class EstruturaAgenda extends JDialog {
 	private JComboBox<Servico> cbServico;
 	private ArrayList<Servico> servicos;
 	private DatePicker dataConsulta;
+	@SuppressWarnings("unused")
 	private ArrayList<Agendamento> agendamentosDodia;
 	private LocalDate dataHoje;
 
@@ -132,16 +133,17 @@ public class EstruturaAgenda extends JDialog {
 					try {						
 						 dataComHoraSelecionado = LocalDateTime.of(dataSelecionada, horaSelecionada);
 						 String mensagem = "";
+						 String msg ="";
 						 mensagem += ControladoraAgendamento.validar(servicoSelecionado, valorDigitado,
 								 profissionalSelecionado, dataComHoraSelecionado);
 					
 						 if (mensagem.isEmpty() || (dataComHora == null )) {
 							 Agendamento agendamento = new Agendamento(clienteSelecionado, profissionalSelecionado,
 									 servicoSelecionado, valorDigitado, dataComHoraSelecionado);
-							 agendamento = controladora.salvar(agendamento);
+							  msg = controladora.salvar(agendamento);
 							ArrayList<Agendamento> atualizarAgendamentos = consultarAgendamentos(dataSelecionada, profissionalSelecionado);
 							 preencherTabela(atualizarAgendamentos);
-							 JOptionPane.showMessageDialog(null, "Agendamento Realizado");
+							 JOptionPane.showMessageDialog(null, msg);
 						 } else {
 							 JOptionPane.showMessageDialog(null, mensagem);
 						 }
