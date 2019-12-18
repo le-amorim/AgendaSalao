@@ -13,17 +13,14 @@ public class AgendamentoBO {
 
 	public String salvar(Agendamento agendamento) {
 		String msg = "";
-		int resultado = 0;
+		
 		if (dao.verificarSePossuiHorarioMarcado(agendamento.getProfissional(), agendamento.getDataComHora())) {
-			msg += ("Este Horário ja está marcado");
+			msg += ("Já possui cliente marcado para esse horário");
 		} else {
-			resultado = dao.salvar(agendamento);
-		}
-		if (resultado > -1) {
+			dao.salvar(agendamento);
 			msg += ("Agendamento Realizado");
-		} else {
-
 		}
+		
 		return msg;
 	}
 

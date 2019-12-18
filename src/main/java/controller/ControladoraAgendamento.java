@@ -4,9 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JOptionPane;
-
 import model.bo.AgendamentoBO;
 import model.vo.Agendamento;
 import model.vo.Profissional;

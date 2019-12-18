@@ -107,9 +107,9 @@ public class TelaCadastroCliente2 extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				ControladoraCliente controladora = new ControladoraCliente();
 
-				String nomeCliente = txtNome2.getText();
+				String nomeCliente = txtNome2.getText().toUpperCase();
 				nomeCliente.toUpperCase();
-				String sobreNomeCliente = txtSobreNome2.getText();
+				String sobreNomeCliente = txtSobreNome2.getText().toUpperCase();
 				sobreNomeCliente.toUpperCase();
 				String telefoneCliente = fmtTelefone.getText();
 				telefoneCliente.replaceAll("()", "");

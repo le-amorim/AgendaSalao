@@ -119,8 +119,8 @@ public class TelaCadastroCliente extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				ControladoraCliente controladora = new ControladoraCliente();
 
-				String nomeCliente = txtNome.getText();
-				String sobreNomeCliente = txtSobreNome.getText();
+				String nomeCliente = txtNome.getText().toUpperCase();
+				String sobreNomeCliente = txtSobreNome.getText().toUpperCase();
 				String telefoneCliente = fmtTelefone.getText();
 				telefoneCliente.replaceAll("()", "");
 				telefoneCliente.replaceAll("-", "");
@@ -253,8 +253,21 @@ public class TelaCadastroCliente extends JPanel {
 	private void construirTabelaClientes() {
 
 		tblConsultaCliente.setModel(
-				new DefaultTableModel(new Object[][] { { "Nome", "Sobrenome", "telefone", "CPF ", "Observacao" }, },
-						new String[] { "Nome", "Sobrenome", "telefone", "CPF ", "Observacao" }));
+				new DefaultTableModel(
+			new Object[][] {
+				{"Nome", "Sobrenome", "telefone", "CPF ", "Observacao"},
+			},
+			new String[] {
+				"Nome", "Sobrenome", "telefone", "CPF ", "Observacao"
+			}
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
 		tblConsultaCliente.getColumnModel().getColumn(0).setPreferredWidth(73);
 		tblConsultaCliente.getColumnModel().getColumn(1).setPreferredWidth(101);
 		tblConsultaCliente.getColumnModel().getColumn(2).setPreferredWidth(92);

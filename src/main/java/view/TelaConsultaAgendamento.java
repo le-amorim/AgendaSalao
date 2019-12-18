@@ -203,8 +203,20 @@ public class TelaConsultaAgendamento extends JDialog {
 	private void atualizarTabelaAgendamento(List<Agendamento> agendamentos) {
 
 		tblAgendamento.setModel(new DefaultTableModel(
-				new String[][] { { "IDAgendamento", "Cliente", "Profissional", "Serviço", "Valor", "Data" }, },
-				new String[] { "IDAgendamento", "Cliente", "Profissional", "Serviço", "Valor", "Data" }));
+			new Object[][] {
+				{"IDAgendamento", "Cliente", "Profissional", "Servi\u00E7o", "Valor", "Data"},
+			},
+			new String[] {
+				"IDAgendamento", "Cliente", "Profissional", "Servi\u00E7o", "Valor", "Data"
+			}
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
 
 		DefaultTableModel model = (DefaultTableModel) tblAgendamento.getModel();
 

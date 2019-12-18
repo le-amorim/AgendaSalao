@@ -41,6 +41,7 @@ public class TelaCadastroServico extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public TelaCadastroServico() {
 		setBounds(100, 100, 368, 300);
 		getContentPane().setLayout(new BorderLayout());

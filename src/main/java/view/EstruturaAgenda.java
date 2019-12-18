@@ -331,8 +331,21 @@ public class EstruturaAgenda extends JDialog {
 
 	private void construirTabelaAgendamento() {
 		tblAgendamento.setModel(
-				new DefaultTableModel(new Object[][] { { "Horario", "Cliente", "Telefone", "Servico", "Valor" }, },
-						new String[] { "Horario", "Cliente", "Telefone", "Servico", "Valor" }));
+				new DefaultTableModel(
+			new Object[][] {
+				{"Horario", "Cliente", "Telefone", "Servico", "Valor"},
+			},
+			new String[] {
+				"Horario", "Cliente", "Telefone", "Servico", "Valor"
+			}
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
 		tblAgendamento.getColumnModel().getColumn(0).setPreferredWidth(120);
 		tblAgendamento.getColumnModel().getColumn(1).setPreferredWidth(100);
 		tblAgendamento.getColumnModel().getColumn(2).setPreferredWidth(110);
@@ -372,8 +385,7 @@ public class EstruturaAgenda extends JDialog {
 	}
 
 	private String obterHora(LocalDateTime dataComHora) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm").withZone(ZoneId.systemDefault());
-
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm").withZone(ZoneId.of("America/Sao_Paulo"));
 		String horaEmString = dataComHora.format(formatter);
 		return horaEmString;
 	}

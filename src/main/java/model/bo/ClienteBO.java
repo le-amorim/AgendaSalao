@@ -1,9 +1,6 @@
 package model.bo;
 
 import java.util.ArrayList;
-
-import javax.swing.JOptionPane;
-
 import model.dao.ClienteDAO;
 import model.vo.Cliente;
 
