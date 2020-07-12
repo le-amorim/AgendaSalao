@@ -12,15 +12,14 @@ public class ClienteDAO {
 
 	public int salvar(Cliente cliente) {
 		Connection conn = Banco.getConnection();
-		String sql = "INSERT INTO CLIENTE (NOME, SOBRENOME, TELEFONE,CPF ,OBSERVACAO) VALUES (?,?,?,?,?)";
+		String sql = "INSERT INTO CLIENTE (NOMECOMPLETO ,TELEFONE ,CPF ,OBSERVACAO) VALUES (?,?,?,?)";
 		PreparedStatement Prepstmt = Banco.getPreparedStatement(conn, sql, PreparedStatement.RETURN_GENERATED_KEYS);
 		int resultado = 0;
 		try {
-			Prepstmt.setString(1, cliente.getNome());
-			Prepstmt.setString(2, cliente.getSobreNome());
-			Prepstmt.setString(3, cliente.getTelefone());
-			Prepstmt.setString(4, cliente.getCpf());
-			Prepstmt.setString(5, cliente.getObservacao());
+			Prepstmt.setString(1, cliente.getNomeCompleto());
+			Prepstmt.setString(2, cliente.getTelefone());
+			Prepstmt.setString(3, cliente.getCpf());
+			Prepstmt.setString(4, cliente.getObservacao());
 			Prepstmt.execute();
 			ResultSet rs = Prepstmt.getGeneratedKeys();
 
@@ -44,7 +43,7 @@ public class ClienteDAO {
 		Connection conn = Banco.getConnection();
 		Statement stmt = Banco.getStatement(conn);
 		ResultSet result = null;
-		String sql = "SELECT * FROM CLIENTE ORDER BY NOME ASC";
+		String sql = "SELECT * FROM CLIENTE ORDER BY NOMECOMPLETO ASC";
 		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 
 		try {
@@ -72,8 +71,7 @@ public class ClienteDAO {
 		Cliente novoCliente = new Cliente();
 		try {
 			novoCliente.setIdCliente(result.getInt("IDCLIENTE"));
-			novoCliente.setNome(result.getString("NOME"));
-			novoCliente.setSobreNome(result.getString("SOBRENOME"));
+			novoCliente.setNomeCompleto(result.getString("NOMECOMPLETO"));
 			novoCliente.setTelefone(result.getString("TELEFONE"));
 			novoCliente.setObservacao(result.getString("OBSERVACAO"));
 			novoCliente.setCpf(result.getString("CPF"));

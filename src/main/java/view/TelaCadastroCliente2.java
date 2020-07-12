@@ -31,7 +31,6 @@ public class TelaCadastroCliente2 extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtNome2;
-	private JTextField txtSobreNome2;
 	private AbstractButton btnSalvar2;
 	private Component lblTelaDeCadastro;
 	private Component separator;
@@ -63,13 +62,9 @@ public class TelaCadastroCliente2 extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
-		JLabel lblNome = new JLabel("Nome:");
-		lblNome.setBounds(35, 45, 46, 14);
+		JLabel lblNome = new JLabel("Nome Completo");
+		lblNome.setBounds(3, 73, 98, 14);
 		contentPanel.add(lblNome);
-
-		JLabel lblSobreNome = new JLabel("SobreNome:");
-		lblSobreNome.setBounds(6, 76, 75, 14);
-		contentPanel.add(lblSobreNome);
 
 		JLabel lblbTelefone = new JLabel("Telefone:");
 		lblbTelefone.setBounds(18, 107, 75, 14);
@@ -80,14 +75,9 @@ public class TelaCadastroCliente2 extends JDialog {
 		contentPanel.add(lblObservacao);
 
 		txtNome2 = new JTextField();
-		txtNome2.setBounds(83, 42, 158, 20);
+		txtNome2.setBounds(94, 70, 158, 20);
 		contentPanel.add(txtNome2);
 		txtNome2.setColumns(10);
-
-		txtSobreNome2 = new JTextField();
-		txtSobreNome2.setColumns(10);
-		txtSobreNome2.setBounds(83, 73, 158, 20);
-		contentPanel.add(txtSobreNome2);
 
 		txtPaneObs = new JTextPane();
 		txtPaneObs.setBounds(83, 199, 256, 112);
@@ -107,10 +97,8 @@ public class TelaCadastroCliente2 extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				ControladoraCliente controladora = new ControladoraCliente();
 
-				String nomeCliente = txtNome2.getText().toUpperCase();
-				nomeCliente.toUpperCase();
-				String sobreNomeCliente = txtSobreNome2.getText().toUpperCase();
-				sobreNomeCliente.toUpperCase();
+				String nomeCompletoCliente = txtNome2.getText();
+				nomeCompletoCliente.toUpperCase();
 				String telefoneCliente = fmtTelefone.getText();
 				telefoneCliente.replaceAll("()", "");
 				telefoneCliente.replaceAll("-", "");
@@ -121,15 +109,19 @@ public class TelaCadastroCliente2 extends JDialog {
 				observacaoCliente.toUpperCase();
 				String mensagem = "";
 				String msg = "";
-				mensagem += controladora.validar(nomeCliente, sobreNomeCliente, telefoneCliente, cpfCliente,
+				mensagem += controladora.validar(nomeCompletoCliente, telefoneCliente, cpfCliente,
 						observacaoCliente);
 				if (mensagem.isEmpty()) {
-					Cliente cliente = new Cliente(nomeCliente, sobreNomeCliente, telefoneCliente, cpfCliente,
+					Cliente cliente = new Cliente(nomeCompletoCliente, telefoneCliente, cpfCliente,
 							observacaoCliente);
 					msg = controladora.salvar(cliente);
 					JOptionPane.showMessageDialog(null, msg);
 					FrmPrimeiraTela tela = new FrmPrimeiraTela();
 					tela.consultarProfissional();
+					TelaCadastroCliente view = new TelaCadastroCliente();
+					view.atualizarTabelaClientes();
+					EstruturaAgenda agenda = new EstruturaAgenda();
+					agenda.consultarClientes();
 				} else {
 					JOptionPane.showMessageDialog(null, mensagem);
 				}
@@ -142,7 +134,6 @@ public class TelaCadastroCliente2 extends JDialog {
 		btnLimpar2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				txtNome2.setText("");
-				txtSobreNome2.setText("");
 				fmtTelefone.setText("");
 				txtPaneObs.setText("");
 			}
@@ -173,7 +164,7 @@ public class TelaCadastroCliente2 extends JDialog {
 
 		JLabel lblLogo = new JLabel("");
 		lblLogo.setIcon(new ImageIcon(TelaCadastroCliente2.class.getResource("/icones/foto.png")));
-		lblLogo.setBounds(248, 38, 171, 150);
+		lblLogo.setBounds(261, 38, 158, 150);
 		contentPanel.add(lblLogo);
 
 		JSeparator separator_1 = new JSeparator();
@@ -184,11 +175,11 @@ public class TelaCadastroCliente2 extends JDialog {
 			MaskFormatter mascaraTelefone = new MaskFormatter("(##)#####-####");
 			MaskFormatter mascaraCpf = new MaskFormatter("###.###.###-##");
 			fmtTelefone = new JFormattedTextField(mascaraTelefone);
-			fmtTelefone.setBounds(83, 104, 158, 20);
+			fmtTelefone.setBounds(94, 104, 158, 20);
 			contentPanel.add(fmtTelefone);
 
 			fmtCpf = new JFormattedTextField(mascaraCpf);
-			fmtCpf.setBounds(83, 135, 158, 20);
+			fmtCpf.setBounds(94, 135, 158, 20);
 			contentPanel.add(fmtCpf);
 
 			JLabel lblCpf = new JLabel("Cpf:");

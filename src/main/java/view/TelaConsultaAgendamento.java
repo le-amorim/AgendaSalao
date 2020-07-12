@@ -226,7 +226,7 @@ public class TelaConsultaAgendamento extends JDialog {
 			String dataFormatada = agendamento.getDataComHora().format(formatter);
 
 			String[] novaLinha = new String[] { agendamento.getIdAgendamento() + "",
-					agendamento.getCliente().getNome() + "", agendamento.getProfissional().getNome(),
+					agendamento.getCliente().getNomeCompleto(), agendamento.getProfissional().getNome(),
 					agendamento.getServico().getServico() + "", agendamento.getValor() + "", dataFormatada };
 			model.addRow(novaLinha);
 		}

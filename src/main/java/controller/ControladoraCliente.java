@@ -9,18 +9,15 @@ import model.vo.Cliente;
 public class ControladoraCliente {
 	ClienteBO bo = new ClienteBO();
 	ClienteDAO dao = new ClienteDAO();
-	public String validar(String nomeCliente,String sobreNomeCliente, String telefoneCliente, String cpfCliente ,String observacao) {
+	public String validar(String nomeCompletoCliente ,String telefoneCliente, String cpfCliente ,String observacao) {
 		String mensagem ="";
 		
 
 
-		if((nomeCliente == null) || (nomeCliente.trim().length() < 3)) {
+		if((nomeCompletoCliente == null) || (nomeCompletoCliente.trim().length() < 3)) {
 			mensagem +="Cliente deve ter no minímo 3 letras ";
 		}
 
-		if((sobreNomeCliente == null) || (sobreNomeCliente.trim().length() < 3)) {
-			mensagem +="Cliente deve ter no minímo 3 letras ";
-		}
 		
 		if((telefoneCliente == null) || (telefoneCliente.trim().length() < 8)) {
 			mensagem +="Telefone deve ter no minímo 8 digitos ";

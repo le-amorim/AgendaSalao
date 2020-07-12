@@ -2,34 +2,32 @@ package model.vo;
 
 public class Cliente {
 	private int idCliente;
-	private String nome;
+	private String nomeCompleto;
 	private String telefone;
 	private String observacao;
-	private String sobreNome;
 	private String cpf;
 	
 
 
-	public Cliente(int idCliente, String nome, String telefone, String observacao, String sobreNome, String cpf) {
+	public Cliente(int idCliente, String nomeCompleto, String telefone, String observacao, String cpf) {
 		super();
 		this.idCliente = idCliente;
-		this.nome = nome;
+		this.nomeCompleto = nomeCompleto;
 		this.telefone = telefone;
 		this.observacao = observacao;
-		this.sobreNome = sobreNome;
 		this.cpf = cpf;
 	}
+
 
 	public Cliente() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Cliente(String nomeCliente,String sobreNomeCliente, String telefoneCliente,String cpfCliente ,String observacaoCliente) {
-		this.nome = nomeCliente;
+	public Cliente(String nomeCompletoCliente, String telefoneCliente,String cpfCliente ,String observacaoCliente) {
+		this.nomeCompleto = nomeCompletoCliente;
 		this.telefone = telefoneCliente;
 		this.observacao = observacaoCliente;
-		this.sobreNome = sobreNomeCliente;
 		this.cpf = cpfCliente;
 	}
 
@@ -43,13 +41,7 @@ public class Cliente {
 		this.idCliente = idCliente;
 	}
 
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+	
 
 	public String getTelefone() {
 		return telefone;
@@ -67,14 +59,7 @@ public class Cliente {
 		this.observacao = observacao;
 	}
 
-	public String getSobreNome() {
-		return sobreNome;
-	}
-
-	public void setSobreNome(String sobreNome) {
-		this.sobreNome = sobreNome;
 	
-	}
 
 	public String getCpf() {
 		return cpf;
@@ -84,11 +69,21 @@ public class Cliente {
 		this.cpf = cpf;
 	}
 	
+	public String getNomeCompleto() {
+		return nomeCompleto;
+	}
+	
+	
+	public void setNomeCompleto(String nomeCompleto) {
+		this.nomeCompleto = nomeCompleto;
+	}
+	
 	
 	@Override
 	public String toString() {
-		return " " + nome + " " + sobreNome + "";
+		return " " + nomeCompleto + " ";
 	}
+
 
 
 	

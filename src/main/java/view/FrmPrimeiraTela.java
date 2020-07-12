@@ -136,8 +136,8 @@ public class FrmPrimeiraTela extends JFrame {
 		getContentPane().add(painelDireito);
 		painelDireito.setLayout(null);
 
-		lblImg = new JLabel("New label");
-		lblImg.setIcon(new ImageIcon(FrmPrimeiraTela.class.getResource("/icones/deboche.gif")));
+		lblImg = new JLabel("");
+		lblImg.setIcon(new ImageIcon(FrmPrimeiraTela.class.getResource("/icones/capa.png")));
 		lblImg.setBounds(10, 11, larguraDaTela, alturaDaTela);
 		painelDireito.add(lblImg);
 

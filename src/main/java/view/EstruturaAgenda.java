@@ -75,7 +75,11 @@ public class EstruturaAgenda extends JDialog {
 		dateSettings.setAllowKeyboardEditing(false);
 
 		final DateTimePicker dataComHora = new DateTimePicker(dateSettings, null);
-		dataComHora.setBounds(95, 60, 300, 30);
+		dataComHora.getDatePicker().getComponentToggleCalendarButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		dataComHora.setBounds(100, 60, 300, 30);
 		getContentPane().add(dataComHora);
 
 		JButton btnPegarData = new JButton("Criar data");
@@ -91,23 +95,23 @@ public class EstruturaAgenda extends JDialog {
 			}
 		});
 
-		this.setModal(true);
-		setBounds(203, 67, 680, 631);
+		this.setModal(false);
+		setBounds(203, 67, 961, 790);
 		getContentPane().setLayout(null);
 
 		JLabel lblAgendamento = new JLabel("Agendamento de ");
 		lblAgendamento.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 20));
-		lblAgendamento.setBounds(231, 12, 173, 22);
+		lblAgendamento.setBounds(366, 12, 173, 22);
 		getContentPane().add(lblAgendamento);
 
 		JLabel lblCliente = new JLabel("Cliente: ");
 		lblCliente.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblCliente.setBounds(36, 105, 46, 14);
+		lblCliente.setBounds(44, 146, 46, 14);
 		getContentPane().add(lblCliente);
 
 		JLabel lblServico = new JLabel("Serviço\r\n:");
 		lblServico.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblServico.setBounds(33, 142, 46, 14);
+		lblServico.setBounds(44, 217, 46, 14);
 		getContentPane().add(lblServico);
 
 		JLabel lblHorario = new JLabel("Data/hora:");
@@ -155,7 +159,7 @@ public class EstruturaAgenda extends JDialog {
 					
 					}
 			});
-			btnSalvar.setBounds(271, 180, 46, 41);
+			btnSalvar.setBounds(398, 199, 59, 46);
 			getContentPane().add(btnSalvar);
 			btnSalvar.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/Save.png")));
 			btnSalvar.setActionCommand("OK");
@@ -172,7 +176,7 @@ public class EstruturaAgenda extends JDialog {
 				}
 			});
 			btnLimpar.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/limpar.png")));
-			btnLimpar.setBounds(327, 180, 53, 41);
+			btnLimpar.setBounds(490, 199, 53, 46);
 			getContentPane().add(btnLimpar);
 			btnLimpar.setActionCommand("Cancel");
 		}
@@ -204,11 +208,11 @@ public class EstruturaAgenda extends JDialog {
 		});
 		btnCancelar.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/delete.png")));
 		btnCancelar.setActionCommand("Delete");
-		btnCancelar.setBounds(369, 555, 30, 30);
+		btnCancelar.setBounds(502, 694, 71, 46);
 		getContentPane().add(btnCancelar);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(51, 313, 565, 238);
+		scrollPane.setBounds(51, 350, 833, 332);
 		getContentPane().add(scrollPane);
 
 		JPanel panel = new JPanel();
@@ -222,19 +226,19 @@ public class EstruturaAgenda extends JDialog {
 		construirTabelaAgendamento();
 
 		txtValor = new JNumberFormatField(2);
-		txtValor.setBounds(346, 136, 49, 29);
+		txtValor.setBounds(817, 140, 49, 29);
 		getContentPane().add(txtValor);
 		// txtValor.setColumns(10);
 
 		JLabel lblValor = new JLabel("");
 		lblValor.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/money.png")));
-		lblValor.setBounds(346, 93, 53, 35);
+		lblValor.setBounds(817, 92, 53, 46);
 
 		getContentPane().add(lblValor);
 
 		lblNomeProfissional = new JLabel("");
 		lblNomeProfissional.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 20));
-		lblNomeProfissional.setBounds(400, 12, 173, 22);
+		lblNomeProfissional.setBounds(543, 12, 173, 22);
 		getContentPane().add(lblNomeProfissional);
 
 		consultarClientes();
@@ -245,7 +249,7 @@ public class EstruturaAgenda extends JDialog {
 
 			}
 		});
-		cbClientes.setBounds(95, 98, 204, 30);
+		cbClientes.setBounds(100, 141, 204, 30);
 		getContentPane().add(cbClientes);
 
 		JButton btnAddCliente = new JButton("");
@@ -257,12 +261,12 @@ public class EstruturaAgenda extends JDialog {
 			}
 		});
 		btnAddCliente.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/plus.png")));
-		btnAddCliente.setBounds(5, 104, 24, 23);
+		btnAddCliente.setBounds(6, 141, 28, 30);
 		getContentPane().add(btnAddCliente);
 
 		consultarServicos();
 		cbServico = new JComboBox(servicos.toArray());
-		cbServico.setBounds(95, 139, 204, 30);
+		cbServico.setBounds(100, 210, 204, 30);
 		cbServico.setSelectedIndex(-1);
 		getContentPane().add(cbServico);
 
@@ -274,19 +278,19 @@ public class EstruturaAgenda extends JDialog {
 			}
 		});
 		button.setIcon(new ImageIcon(EstruturaAgenda.class.getResource("/icones/plus.png")));
-		button.setBounds(5, 141, 24, 23);
+		button.setBounds(6, 210, 28, 30);
 		getContentPane().add(button);
 
 		JSeparator separator = new JSeparator();
-		separator.setBounds(0, 225, 664, 14);
+		separator.setBounds(0, 262, 945, 14);
 		getContentPane().add(separator);
 
 		JLabel lblSelecioneDataPara = new JLabel("Selecione data para consulta:");
-		lblSelecioneDataPara.setBounds(62, 282, 181, 14);
+		lblSelecioneDataPara.setBounds(99, 307, 191, 14);
 		getContentPane().add(lblSelecioneDataPara);
 
 		dataConsulta = new DatePicker();
-		dataConsulta.setBounds(250, 275, 288, 30);
+		dataConsulta.setBounds(290, 300, 288, 30);
 		getContentPane().add(dataConsulta);
 
 		JButton btnBuscar = new JButton("");
@@ -316,12 +320,12 @@ public class EstruturaAgenda extends JDialog {
 
 			}
 		});
-		btnBuscar.setBounds(310, 555, 30, 30);
+		btnBuscar.setBounds(398, 694, 71, 46);
 		getContentPane().add(btnBuscar);
 
 		JLabel lblConsultarAgenda = new JLabel("Consultar Agendamentos");
 		lblConsultarAgenda.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 20));
-		lblConsultarAgenda.setBounds(246, 239, 245, 25);
+		lblConsultarAgenda.setBounds(312, 264, 245, 25);
 		getContentPane().add(lblConsultarAgenda);
 		dataConsulta.getComponentToggleCalendarButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -346,11 +350,11 @@ public class EstruturaAgenda extends JDialog {
 				return columnEditables[column];
 			}
 		});
-		tblAgendamento.getColumnModel().getColumn(0).setPreferredWidth(120);
-		tblAgendamento.getColumnModel().getColumn(1).setPreferredWidth(100);
-		tblAgendamento.getColumnModel().getColumn(2).setPreferredWidth(110);
-		tblAgendamento.getColumnModel().getColumn(3).setPreferredWidth(110);
-		tblAgendamento.getColumnModel().getColumn(4).setPreferredWidth(90);
+		tblAgendamento.getColumnModel().getColumn(0).setPreferredWidth(150);
+		tblAgendamento.getColumnModel().getColumn(1).setPreferredWidth(150);
+		tblAgendamento.getColumnModel().getColumn(2).setPreferredWidth(150);
+		tblAgendamento.getColumnModel().getColumn(3).setPreferredWidth(150);
+		tblAgendamento.getColumnModel().getColumn(4).setPreferredWidth(150);
 
 	}
 
@@ -361,7 +365,7 @@ public class EstruturaAgenda extends JDialog {
 		for (Agendamento agendamento : agendamentosConsultado) {
 			String[] novaLinha = new String[5];
 			novaLinha[0] = obterHora(agendamento.getDataComHora());
-			novaLinha[1] = agendamento.getCliente().getNome();
+			novaLinha[1] = agendamento.getCliente().getNomeCompleto();
 			novaLinha[2] = agendamento.getCliente().getTelefone();
 			novaLinha[3] = agendamento.getServico().getServico();
 			novaLinha[4] = agendamento.getValor() + "";
@@ -376,7 +380,7 @@ public class EstruturaAgenda extends JDialog {
 		for (Agendamento agendamento : agendamentosDodia) {
 			String[] novaLinha = new String[5];
 			novaLinha[0] = obterHora(agendamento.getDataComHora());
-			novaLinha[1] = agendamento.getCliente().getNome();
+			novaLinha[1] = agendamento.getCliente().getNomeCompleto();
 			novaLinha[2] = agendamento.getCliente().getTelefone();
 			novaLinha[3] = agendamento.getServico().getServico();
 			novaLinha[4] = agendamento.getValor() + "";

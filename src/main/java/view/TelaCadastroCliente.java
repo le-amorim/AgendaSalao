@@ -38,17 +38,16 @@ public class TelaCadastroCliente extends JPanel {
 	private JButton btnLimpar;
 	private JTable tblConsultaCliente;
 	private ArrayList<Cliente> clientes;
-	private JTextField txtSobreNome;
 	private JFormattedTextField fmtTelefone;
 	protected int linhaSelecionada;
 	private JFormattedTextField fmtCpf;
 
 	public TelaCadastroCliente() {
 		setBackground(SystemColor.activeCaption);
-		setBounds(0, 0, 679, 630);
+		setBounds(0, 0, 1000, 761);
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		JButton btnExcluirCliente = new JButton("Excluir Cliente");
-		btnExcluirCliente.setBounds(328, 585, 122, 23);
+		btnExcluirCliente.setBounds(273, 681, 122, 47);
 		btnExcluirCliente.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -80,47 +79,48 @@ public class TelaCadastroCliente extends JPanel {
 		setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 344, 522, 230);
+		scrollPane.setBounds(75, 425, 832, 230);
 		add(scrollPane);
 
 		JPanel panel = new JPanel();
 		scrollPane.setViewportView(panel);
+		panel.setLayout(null);
 
 		tblConsultaCliente = new JTable();
+		tblConsultaCliente.setBounds(43, 5, 744, 16);
 		panel.add(tblConsultaCliente);
 		tblConsultaCliente.setBorder(new LineBorder(new Color(0, 0, 0)));
 
-		JLabel lblCpf = new JLabel("Cpf: ");
-		lblCpf.setBounds(70, 115, 46, 14);
+		JLabel lblCpf = new JLabel("Cpf ");
+		lblCpf.setBounds(433, 110, 46, 14);
 		add(lblCpf);
 		add(btnExcluirCliente);
 
 		JLabel lblCadastroDeCliente = new JLabel("Cadastro De Cliente");
-		lblCadastroDeCliente.setBounds(149, 11, 196, 14);
+		lblCadastroDeCliente.setBounds(388, 11, 196, 14);
 		lblCadastroDeCliente.setFont(new Font("Segoe Script", Font.BOLD, 13));
 		this.add(lblCadastroDeCliente);
 
-		JLabel lblNome = new JLabel("Nome");
-		lblNome.setBounds(60, 54, 46, 14);
+		JLabel lblNome = new JLabel("Nome Completo");
+		lblNome.setBounds(415, 54, 106, 14);
 		this.add(lblNome);
 
 		txtNome = new JTextField();
-		txtNome.setBounds(110, 51, 179, 20);
+		txtNome.setBounds(360, 79, 204, 20);
 		this.add(txtNome);
 		txtNome.setColumns(10);
 
 		JLabel lblTelefone = new JLabel("Telefone");
-		lblTelefone.setBounds(50, 151, 66, 17);
+		lblTelefone.setBounds(425, 170, 66, 17);
 		this.add(lblTelefone);
 
 		JButton btnSalvar = new JButton("Salvar");
-		btnSalvar.setBounds(206, 257, 83, 39);
+		btnSalvar.setBounds(360, 337, 83, 39);
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ControladoraCliente controladora = new ControladoraCliente();
 
-				String nomeCliente = txtNome.getText().toUpperCase();
-				String sobreNomeCliente = txtSobreNome.getText().toUpperCase();
+				String nomeCompletoCliente = txtNome.getText().toUpperCase();
 				String telefoneCliente = fmtTelefone.getText();
 				telefoneCliente.replaceAll("()", "");
 				telefoneCliente.replaceAll("-", "");
@@ -130,10 +130,10 @@ public class TelaCadastroCliente extends JPanel {
 				cpfCliente.replaceAll("-", "");
 				String mensagem = "";
 				String msg = "";
-				mensagem += controladora.validar(nomeCliente, sobreNomeCliente, telefoneCliente, cpfCliente,
+				mensagem += controladora.validar(nomeCompletoCliente, telefoneCliente, cpfCliente,
 						observacaoCliente);
 				if (mensagem.isEmpty()) {
-					Cliente cliente = new Cliente(nomeCliente, sobreNomeCliente, telefoneCliente, cpfCliente,
+					Cliente cliente = new Cliente(nomeCompletoCliente, telefoneCliente, cpfCliente,
 							observacaoCliente);
 					msg = controladora.salvar(cliente);
 					JOptionPane.showMessageDialog(null, msg);
@@ -149,64 +149,41 @@ public class TelaCadastroCliente extends JPanel {
 		this.add(btnSalvar);
 
 		btnLimpar = new JButton("Limpar");
-		btnLimpar.setBounds(110, 257, 86, 39);
+		btnLimpar.setBounds(477, 337, 86, 39);
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				txtNome.setText("");
-				txtSobreNome.setText("");
 				fmtTelefone.setText("");
 				fmtCpf.setText("");
 				((JTextComponent) txtObservacao).setText("");
 			}
 		});
 		this.add(btnLimpar);
-		
-		JSeparator separator = new JSeparator();
-		separator.setBounds(0, 609, 565, 10);
-		add(separator);
-		
-		JSeparator separator_2 = new JSeparator();
-		separator_2.setOrientation(SwingConstants.VERTICAL);
-		separator_2.setBounds(564, 309, 20, 299);
-		add(separator_2);
-
-		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(0, 307, 565, 10);
-		this.add(separator_1);
 
 		txtObservacao = new JTextArea();
-		txtObservacao.setBounds(110, 180, 179, 66);
+		txtObservacao.setBounds(360, 254, 204, 66);
 		this.add(txtObservacao);
 
-		JLabel lblObservacao = new JLabel("Observação:");
-		lblObservacao.setBounds(34, 204, 77, 14);
+		JLabel lblObservacao = new JLabel("Observação");
+		lblObservacao.setBounds(425, 229, 77, 14);
 		this.add(lblObservacao);
 
 		JLabel lblConsultaDeCliente = new JLabel("Consulta de Cliente");
-		lblConsultaDeCliente.setBounds(149, 317, 196, 14);
+		lblConsultaDeCliente.setBounds(388, 387, 196, 14);
 		lblConsultaDeCliente.setForeground(Color.BLACK);
 		lblConsultaDeCliente.setFont(new Font("Segoe Script", Font.BOLD | Font.ITALIC, 13));
 		this.add(lblConsultaDeCliente);
 		construirTabelaClientes();
 
-		JLabel lblSobreNome = new JLabel("SobreNome");
-		lblSobreNome.setBounds(35, 79, 77, 14);
-		add(lblSobreNome);
-
-		txtSobreNome = new JTextField();
-		txtSobreNome.setBounds(110, 82, 179, 20);
-		txtSobreNome.setColumns(10);
-		add(txtSobreNome);
-
 		try {
 			MaskFormatter mascaraTelefone = new MaskFormatter("(##)#####-####");
 			MaskFormatter mascaraCpf = new MaskFormatter("###.###.###-##");
 			fmtTelefone = new JFormattedTextField(mascaraTelefone);
-			fmtTelefone.setBounds(110, 149, 179, 20);
+			fmtTelefone.setBounds(360, 198, 204, 20);
 			add(fmtTelefone);
 
 			fmtCpf = new JFormattedTextField(mascaraCpf);
-			fmtCpf.setBounds(110, 113, 179, 20);
+			fmtCpf.setBounds(360, 139, 204, 20);
 			add(fmtCpf);
 			
 					
@@ -215,14 +192,9 @@ public class TelaCadastroCliente extends JPanel {
 		} catch (ParseException e) {
 		}
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBounds(0, 0, larguraDaTela, alturaDaTela);
+		lblNewLabel.setBounds(0, 0, 0, 0);
 		lblNewLabel.setIcon(new ImageIcon(TelaCadastroCliente.class.getResource("/icones/deboche.gif")));
 		add(lblNewLabel);
-		
-		JSeparator separator_3 = new JSeparator();
-		separator_3.setOrientation(SwingConstants.VERTICAL);
-		separator_3.setBounds(0, 307, 20, 299);
-		add(separator_3);
 		
 		
 
@@ -234,12 +206,11 @@ public class TelaCadastroCliente extends JPanel {
 		construirTabelaClientes();
 		DefaultTableModel model = (DefaultTableModel) tblConsultaCliente.getModel();
 		for (Cliente cliente : clientes) {
-			String[] novaLinha = new String[5];
-			novaLinha[0] = cliente.getNome().toUpperCase();
-			novaLinha[1] = cliente.getSobreNome().toUpperCase();
-			novaLinha[2] = cliente.getTelefone().toUpperCase();
-			novaLinha[3] = cliente.getCpf().toUpperCase();
-			novaLinha[4] = cliente.getObservacao().toUpperCase();
+			String[] novaLinha = new String[4];
+			novaLinha[0] = cliente.getNomeCompleto().toUpperCase();
+			novaLinha[1] = cliente.getTelefone().toUpperCase();
+			novaLinha[2] = cliente.getCpf().toUpperCase();
+			novaLinha[3] = cliente.getObservacao().toUpperCase();
 			// Adiciona a nova linha na tabela
 			model.addRow(novaLinha);
 
@@ -255,24 +226,23 @@ public class TelaCadastroCliente extends JPanel {
 		tblConsultaCliente.setModel(
 				new DefaultTableModel(
 			new Object[][] {
-				{"Nome", "Sobrenome", "telefone", "CPF ", "Observacao"},
+				{"Nome Completo", "telefone", "CPF ", "Observacao"},
 			},
 			new String[] {
-				"Nome", "Sobrenome", "telefone", "CPF ", "Observacao"
+				"Nome Completo", "telefone", "CPF ", "Observacao"
 			}
 		) {
 			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, false
+				false, false, false, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
 		});
-		tblConsultaCliente.getColumnModel().getColumn(0).setPreferredWidth(73);
-		tblConsultaCliente.getColumnModel().getColumn(1).setPreferredWidth(101);
-		tblConsultaCliente.getColumnModel().getColumn(2).setPreferredWidth(92);
-		tblConsultaCliente.getColumnModel().getColumn(3).setPreferredWidth(102);
-		tblConsultaCliente.getColumnModel().getColumn(4).setPreferredWidth(90);
+		tblConsultaCliente.getColumnModel().getColumn(0).setPreferredWidth(250);
+		tblConsultaCliente.getColumnModel().getColumn(1).setPreferredWidth(188);
+		tblConsultaCliente.getColumnModel().getColumn(2).setPreferredWidth(156);
+		tblConsultaCliente.getColumnModel().getColumn(3).setPreferredWidth(236);
 
 	}
 }

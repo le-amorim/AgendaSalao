@@ -64,15 +64,19 @@ import java.sql.Statement;
  */
 public class Banco {
 
+
 	private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 	private static final String BANCODADOS = "SALAODB";
 	private static final String CONEXAO = "jdbc:mysql://localhost:3306/" + BANCODADOS
-			+ "?useTimezone=true&serverTimezone=GMT-2";
+			+ "?useTimezone=true&serverTimezone=GMT-1";
 	private static final String USER = "root";
 	private static final String PASSWORD = "root";
-	// com.mysql.jdbc.Driver
 	public static final int CODIGO_RETORNO_ERRO_EXCLUSAO = 0;
 	public static final int CODIGO_RETORNO_SUCESSO_EXCLUSAO = 1;
+
+
+
+
 
 	/**
 	 * Estabelece a conexão JBDC considerando as configurações da classe Banco.
@@ -98,6 +102,7 @@ public class Banco {
 			return null;
 		} catch (SQLException e) {
 			System.out.println("Erro ao obter a Connection. Causa: " + e.getMessage());
+			System.out.println(CONEXAO);
 			return null;
 		}
 	}
